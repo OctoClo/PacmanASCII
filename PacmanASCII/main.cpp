@@ -39,7 +39,9 @@ int main()
 	WriteConsoleOutput(hOutput, (CHAR_INFO *)buffer, dwBufferSize,
 		dwBufferCoord, &rcRegion);
 
-	GameManager gm = GameManager::getInstance();
+	GameManager* gm = GameManager::GetInstance();
+	gm->Test();
+	//GameManager* gm = GameManager::getInstance();
 
 	while (1)
 	{

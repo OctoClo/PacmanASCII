@@ -5,13 +5,18 @@
 
 class GameManager
 {
-public:
-	static GameManager& getInstance();
+/*public:
+	static GameManager* getInstance();
 
 private:
 	GameManager();
 
-	static GameManager instance;
-};
-
+	static GameManager instance;*/
+	public:
+		static GameManager* GetInstance();
+		void Test();
+	private:
+		//GameManager();
+		static GameManager* _instance;		// singleton instance
+	};
 #endif
