@@ -15,6 +15,32 @@ CHAR_INFO buffer[SCREEN_HEIGHT][SCREEN_WIDTH];
 int x = 0;
 int y = 0;
 
+enum Color {
+	Transparent,
+	Blue,
+	Green,
+	Cyan,
+	Red,
+	Purple,
+	Yellow,
+	White,
+	Grey,
+	LightBlue,
+	LightGreen,
+	LightCyan,
+	LightRed,
+	LightPurple,
+	LightYellow,
+	LightWhite,
+	LightGrey
+};
+static int GetASCIIColor(Color pForeground, Color pBackground)
+{
+	int output(0);
+	output = pForeground + (pBackground * 16);
+	return output;
+}
+
 int main()
 {
 	HANDLE hOutput = (HANDLE)GetStdHandle(STD_OUTPUT_HANDLE);
@@ -57,9 +83,14 @@ int main()
 			switch (key) {
 			case 'z':
 				buffer[x][y].Char.AsciiChar = 'H';
-				buffer[x][y].Attributes = 0x0A;
-				WriteConsoleOutput(hOutput, (CHAR_INFO *)buffer, dwBufferSize,
-					dwBufferCoord, &rcRegion);
+				buffer[x][y].Attributes = GetASCIIColor(Color::Transparent, Color::Transparent);
+
+				buffer[x + 1][y].Char.AsciiChar = 'H';
+				buffer[x + 1][y].Attributes = GetASCIIColor(Color::Red, Color::Transparent);
+				WriteConsoleOutput(hOutput, (CHAR_INFO *)buffer, dwBufferSize, dwBufferCoord, &rcRegion);
+
+				x++;
+
 				break;
 
 			case 's':
