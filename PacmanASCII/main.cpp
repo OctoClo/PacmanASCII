@@ -1,4 +1,4 @@
-﻿// PacmanASCII.cpp : définit le point d'entrée pour l'application console.
+// PacmanASCII.cpp : définit le point d'entrée pour l'application console.
 //
 
 #include "stdafx.h"
@@ -40,8 +40,6 @@ int main()
 		dwBufferCoord, &rcRegion);
 
 	GameManager* gm = GameManager::GetInstance();
-	gm->Test();
-	//GameManager* gm = GameManager::getInstance();
 
 	while (1)
 	{

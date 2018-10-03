@@ -2,29 +2,14 @@
 #include "stdafx.h"
 #include "GameManager.h"
 
+GameManager* GameManager::_instance = nullptr;
 
-/*GameManager GameManager::instance = GameManager();
-
-GameManager* GameManager::getInstance()
+GameManager* GameManager::GetInstance() 
 {
-	return &instance;
-}*/
-
-GameManager* GameManager::_instance = NULL;
-
-/*GameManager::GameManager()
-{
-	// do init stuff
-}*/
-
-GameManager* GameManager::GetInstance()
-{
-	if (_instance == NULL) {
+	if (!_instance) 
+	{
 		_instance = new GameManager();
 	}
-	return _instance;
-}
 
-void GameManager::Test() {
-	printf("instance appelée");
+	return _instance;
 }
