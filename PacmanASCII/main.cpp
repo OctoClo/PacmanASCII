@@ -1,4 +1,4 @@
-// PacmanASCII.cpp : définit le point d'entrée pour l'application console.
+﻿// PacmanASCII.cpp : définit le point d'entrée pour l'application console.
 //
 
 #include "stdafx.h"
@@ -10,6 +10,11 @@
 
 using namespace std;
 
+CHAR_INFO buffer[SCREEN_HEIGHT][SCREEN_WIDTH];
+
+int x = 0;
+int y = 0;
+
 int main()
 {
 	HANDLE hOutput = (HANDLE)GetStdHandle(STD_OUTPUT_HANDLE);
@@ -18,7 +23,7 @@ int main()
 	COORD dwBufferCoord = { 0, 0 };
 	SMALL_RECT rcRegion = { 0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1 };
 
-	CHAR_INFO buffer[SCREEN_HEIGHT][SCREEN_WIDTH];
+	//CHAR_INFO buffer[SCREEN_HEIGHT][SCREEN_WIDTH];
 
 	// Hide blinking caret
 	CONSOLE_CURSOR_INFO cursorInfo;
@@ -43,11 +48,42 @@ int main()
 
 	while (1)
 	{
+		int key = 0;
+
 		if (_kbhit())
 		{
-			break;
+			key = _getch();
+
+			switch (key) {
+			case 'z':
+				buffer[x][y].Char.AsciiChar = 'H';
+				buffer[x][y].Attributes = 0x0A;
+				WriteConsoleOutput(hOutput, (CHAR_INFO *)buffer, dwBufferSize,
+					dwBufferCoord, &rcRegion);
+				break;
+
+			case 's':
+				printf("s");
+				break;
+
+			case 'q':
+				printf("q");
+				break;
+
+			case 'd':
+				printf("d");
+				break;
+
+			default:
+				break;
+			}
 		}
+		/*if (_kbhit())
+		{
+			break;
+		}*/
 	}
+
 
 	return 0;
 }
