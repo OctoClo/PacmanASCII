@@ -3,10 +3,11 @@
 
 #include "stdafx.h"
 #include "GameManager.h"
+#include <algorithm>
 
 #define WIN32_LEAN_AND_MEAN
-#define SCREEN_WIDTH 250
-#define SCREEN_HEIGHT 500
+#define SCREEN_WIDTH 50
+#define SCREEN_HEIGHT 25
 
 using namespace std;
 
@@ -39,6 +40,24 @@ static int GetASCIIColor(Color pForeground, Color pBackground)
 	int output(0);
 	output = pForeground + (pBackground * 16);
 	return output;
+}
+
+void CleanPreviousTile() {
+	buffer[x][y].Char.AsciiChar = 'H';
+	buffer[x][y].Attributes = GetASCIIColor(Color::Transparent, Color::Transparent);
+}
+
+void UpdateTiles(int pX=0, int pY=0) {
+	
+	//As -- = + we should invert the tests
+	if ((x + pX) < 0 || (x + pX) > SCREEN_HEIGHT - 1) pX = 0;
+	if ((y + pY) < 0 || (y + pY) > SCREEN_WIDTH - 1) pY = 0;
+
+	buffer[x + pX][y + pY].Char.AsciiChar = 'H';
+	buffer[x + pX][y + pY].Attributes = GetASCIIColor(Color::LightYellow, Color::Transparent);
+
+	x += pX;
+	y += pY;
 }
 
 int main()
@@ -82,27 +101,35 @@ int main()
 
 			switch (key) {
 			case 'z':
-				buffer[x][y].Char.AsciiChar = 'H';
-				buffer[x][y].Attributes = GetASCIIColor(Color::Transparent, Color::Transparent);
+				CleanPreviousTile();
+				UpdateTiles(-1,0);
 
-				buffer[x + 1][y].Char.AsciiChar = 'H';
-				buffer[x + 1][y].Attributes = GetASCIIColor(Color::Red, Color::Transparent);
 				WriteConsoleOutput(hOutput, (CHAR_INFO *)buffer, dwBufferSize, dwBufferCoord, &rcRegion);
-
-				x++;
 
 				break;
 
 			case 's':
-				printf("s");
+				CleanPreviousTile();
+				UpdateTiles(1, 0);
+
+				WriteConsoleOutput(hOutput, (CHAR_INFO *)buffer, dwBufferSize, dwBufferCoord, &rcRegion);
+
 				break;
 
 			case 'q':
-				printf("q");
+				CleanPreviousTile();
+				UpdateTiles(0, -1);
+
+				WriteConsoleOutput(hOutput, (CHAR_INFO *)buffer, dwBufferSize, dwBufferCoord, &rcRegion);
+
 				break;
 
 			case 'd':
-				printf("d");
+				CleanPreviousTile();
+				UpdateTiles(0, 1);
+
+				WriteConsoleOutput(hOutput, (CHAR_INFO *)buffer, dwBufferSize, dwBufferCoord, &rcRegion);
+
 				break;
 
 			default:
