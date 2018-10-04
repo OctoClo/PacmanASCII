@@ -1,6 +1,3 @@
-#ifndef RENDERER_H
-#define RENDERER_H
-
 #pragma once
 
 #define SCREEN_WIDTH 100
@@ -32,5 +29,3 @@ private:
 
 	static Renderer* _instance;
 };
-
-#endif

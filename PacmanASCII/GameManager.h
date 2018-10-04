@@ -1,6 +1,3 @@
-#ifndef GAME_MANAGER_H
-#define GAME_MANAGER_H
-
 #pragma once
 
 #define KEY_ESC 27
@@ -47,4 +44,3 @@ private:
 
 	static GameManager* _instance;
 };
-#endif

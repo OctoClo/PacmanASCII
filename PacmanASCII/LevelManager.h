@@ -1,6 +1,3 @@
-#ifndef LEVEL_MANAGER_H
-#define LEVEL_MANAGER_H
-
 #pragma once
 
 #define START_SCORE 0
@@ -38,5 +35,3 @@ private:
 
 	static LevelManager* _instance;
 };
-
-#endif

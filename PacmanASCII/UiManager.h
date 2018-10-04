@@ -1,6 +1,3 @@
-#ifndef UI_MANAGER_H
-#define UI_MANAGER_H
-
 #pragma once
 
 #define START_BUTTON_TEXT "START"
@@ -45,5 +42,3 @@ private:
 
 	static UiManager* _instance;
 };
-
-#endif
