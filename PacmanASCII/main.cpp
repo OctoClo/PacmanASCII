@@ -69,21 +69,38 @@ void CleanPreviousTile() {
 }
 
 //Update the buffer to make the snake moving
-void UpdateTiles(int pX=0, int pY=0) {
-	
-	Coords snakeHeadCoord = snakeMap[0];
+void UpdateTiles(int pX=0, int pY=0) 
+{
+	int length = snakeMap.size() - 1;
 
-	//Block the snake from moving outside the boards
-	//As -- = + we should invert the tests
-	if ((snakeHeadCoord.x + pX) < 0 || (snakeHeadCoord.x + pX) > SCREEN_HEIGHT - 1) pX = 0;
-	if ((snakeHeadCoord.y + pY) < 0 || (snakeHeadCoord.y + pY) > SCREEN_WIDTH - 1) pY = 0;
+	for (int i = length; i >= 0; i--) 
+	{
+		if (i == length) CleanPreviousTile();
 
-	buffer[snakeHeadCoord.x + pX][snakeHeadCoord.y + pY].Char.AsciiChar = 'H';
-	buffer[snakeHeadCoord.x + pX][snakeHeadCoord.y + pY].Attributes = GetASCIIColor(Color::LightYellow, Color::Transparent);
+		if (i == 0) {
+			Coords snakeHeadCoord = snakeMap[0];
 
-	Coords newSnakeHeadCoord(snakeHeadCoord.x + pX, snakeHeadCoord.y + pY);
+			//Block the snake from moving outside the boards
+			//As -- = + we should invert the tests
+			if ((snakeHeadCoord.x + pX) < 0 || (snakeHeadCoord.x + pX) > SCREEN_HEIGHT - 1) pX = 0;
+			if ((snakeHeadCoord.y + pY) < 0 || (snakeHeadCoord.y + pY) > SCREEN_WIDTH - 1) pY = 0;
 
-	snakeMap[0] = newSnakeHeadCoord;
+			Coords newSnakeHeadCoord(snakeHeadCoord.x + pX, snakeHeadCoord.y + pY);
+
+			snakeMap[0] = newSnakeHeadCoord;
+
+			buffer[newSnakeHeadCoord.x][newSnakeHeadCoord.y].Char.AsciiChar = 'H';
+			buffer[newSnakeHeadCoord.x][newSnakeHeadCoord.y].Attributes = GetASCIIColor(Color::LightYellow, Color::Transparent);
+
+			break;
+		}
+
+		snakeMap[i] = snakeMap[i-1];
+		Coords newCoord = snakeMap[i];
+
+		buffer[newCoord.x][newCoord.y].Char.AsciiChar = '-';
+		buffer[newCoord.x][newCoord.y].Attributes = GetASCIIColor(Color::LightBlue, Color::Transparent);
+	}
 }
 
 int main()
@@ -114,8 +131,7 @@ int main()
 	buffer[5][12].Char.AsciiChar = '!';
 	buffer[5][12].Attributes = 0x0A;*/
 
-	WriteConsoleOutput(hOutput, (CHAR_INFO *)buffer, dwBufferSize,
-		dwBufferCoord, &rcRegion);
+	//WriteConsoleOutput(hOutput, (CHAR_INFO *)buffer, dwBufferSize, dwBufferCoord, &rcRegion);
 
 	GameManager* gm = GameManager::GetInstance();
 #pragma endregion
@@ -125,8 +141,18 @@ int main()
 	Coords thirdCoords(10, 12);
 
 	snakeMap.insert(std::make_pair(0, firstCoords));
-	/*snakeMap.insert(std::make_pair(0, secondCoords));
-	snakeMap.insert(std::make_pair(0, thirdCoords));*/
+	snakeMap.insert(std::make_pair(1, secondCoords));
+	snakeMap.insert(std::make_pair(2, thirdCoords));
+
+	//A LA DURE
+	buffer[10][10].Char.AsciiChar = 'H';
+	buffer[10][10].Attributes = 0x0E;
+	buffer[10][11].Char.AsciiChar = '-';
+	buffer[10][11].Attributes = 0x0B;
+	buffer[10][12].Char.AsciiChar = '-';
+	buffer[10][12].Attributes = 0x0B;
+
+	WriteConsoleOutput(hOutput, (CHAR_INFO *)buffer, dwBufferSize, dwBufferCoord, &rcRegion);
 
 	//int test = snakeMap[0].x;
 	//snakeMap[0] = firstCoords;
@@ -142,7 +168,6 @@ int main()
 
 			switch (key) {
 			case 'z':
-				CleanPreviousTile();
 				UpdateTiles(-1,0);
 
 				WriteConsoleOutput(hOutput, (CHAR_INFO *)buffer, dwBufferSize, dwBufferCoord, &rcRegion);
@@ -150,7 +175,6 @@ int main()
 				break;
 
 			case 's':
-				CleanPreviousTile();
 				UpdateTiles(1, 0);
 
 				WriteConsoleOutput(hOutput, (CHAR_INFO *)buffer, dwBufferSize, dwBufferCoord, &rcRegion);
@@ -158,7 +182,6 @@ int main()
 				break;
 
 			case 'q':
-				CleanPreviousTile();
 				UpdateTiles(0, -1);
 
 				WriteConsoleOutput(hOutput, (CHAR_INFO *)buffer, dwBufferSize, dwBufferCoord, &rcRegion);
@@ -166,7 +189,6 @@ int main()
 				break;
 
 			case 'd':
-				CleanPreviousTile();
 				UpdateTiles(0, 1);
 
 				WriteConsoleOutput(hOutput, (CHAR_INFO *)buffer, dwBufferSize, dwBufferCoord, &rcRegion);
