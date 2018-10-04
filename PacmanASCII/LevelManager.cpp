@@ -17,7 +17,7 @@ LevelManager* LevelManager::GetInstance()
 void LevelManager::Init(Renderer* pRenderer)
 {
 	_renderer = pRenderer;
-	CreateLevel();
+	FillBoard();
 }
 
 void LevelManager::Start()
@@ -60,7 +60,7 @@ void LevelManager::Render()
 	}
 }
 
-void LevelManager::CreateLevel()
+void LevelManager::FillBoard()
 {
 	// Create 2 vertical walls
 	int startX = 1;
@@ -95,27 +95,27 @@ void LevelManager::SpawnCollectible()
 	_board[10][20] = ETile::Collectible;
 }
 
-void LevelManager::TileToChar(ETile& pTile, char& asciiChar, EColor& pForeground)
+void LevelManager::TileToChar(ETile& pTile, char& pAsciiChar, EColor& pForeground)
 {
 	switch (pTile)
 	{
 	case ETile::Wall:
-		asciiChar = '#';
+		pAsciiChar = '#';
 		pForeground = EColor::Cyan;
 		break;
 
 	case ETile::SnakeHead:
-		asciiChar = '@';
+		pAsciiChar = '@';
 		pForeground = EColor::LightYellow;
 		break;
 
 	case ETile::SnakeBody:
-		asciiChar = 'o';
+		pAsciiChar = 'o';
 		pForeground = EColor::Yellow;
 		break;
 
 	case ETile::Collectible:
-		asciiChar = '*';
+		pAsciiChar = '*';
 		pForeground = EColor::LightGreen;
 		break;
 	}

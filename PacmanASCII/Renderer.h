@@ -35,7 +35,7 @@ public:
 
 	void Render();
 
-	void DrawChar(int pX, int pY, char asciiChar, EColor pForeground, EColor pBackground = EColor::Transparent);
+	void DrawChar(int pX, int pY, char pAsciiChar, EColor pForeground, EColor pBackground = EColor::Transparent);
 
 	static Renderer* GetInstance();
 

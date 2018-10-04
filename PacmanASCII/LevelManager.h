@@ -34,9 +34,9 @@ public:
 	static LevelManager* GetInstance();
 
 private:
-	void CreateLevel();
+	void FillBoard();
 	void SpawnCollectible();
-	void TileToChar(ETile& pTile, char& asciiChar, EColor& pForeground);
+	void TileToChar(ETile& pTile, char& pAsciiChar, EColor& pForeground);
 
 	int _score;
 	int _lives;

@@ -35,9 +35,9 @@ void Renderer::Render()
 		_screenBufferCoord, &_rectRegion);
 }
 
-void Renderer::DrawChar(int pX, int pY, char asciiChar, EColor pForeground, EColor pBackground)
+void Renderer::DrawChar(int pX, int pY, char pAsciiChar, EColor pForeground, EColor pBackground)
 {
-	_screenBuffer[pX][pY].Char.AsciiChar = asciiChar;
+	_screenBuffer[pX][pY].Char.AsciiChar = pAsciiChar;
 	_screenBuffer[pX][pY].Attributes = GetASCIIColor(pForeground, pBackground);
 }
 
