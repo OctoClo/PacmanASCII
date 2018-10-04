@@ -4,6 +4,9 @@
 #include "stdafx.h"
 #include "GameManager.h"
 #include <algorithm>
+#include <map>
+#include <string>
+#include <iostream>
 
 #define WIN32_LEAN_AND_MEAN
 #define SCREEN_WIDTH 50
@@ -13,8 +16,16 @@ using namespace std;
 
 CHAR_INFO buffer[SCREEN_HEIGHT][SCREEN_WIDTH];
 
-int x = 0;
-int y = 0;
+struct Coords {
+	int x, y;
+
+	Coords(int pX = 0, int pY = 0) {
+		x = pX;
+		y = pY;
+	}
+};
+
+std::map<int, Coords> snakeMap;
 
 enum Color {
 	Transparent,
@@ -42,26 +53,43 @@ static int GetASCIIColor(Color pForeground, Color pBackground)
 	return output;
 }
 
+//Keep the last tile where the snake was, and clean it
 void CleanPreviousTile() {
-	buffer[x][y].Char.AsciiChar = 'H';
-	buffer[x][y].Attributes = GetASCIIColor(Color::Transparent, Color::Transparent);
+	
+	int lastIndex;
+
+	//Security, in case the map is empty
+	if (snakeMap.size() - 1 < 0) lastIndex = 0;
+	else lastIndex = snakeMap.size() - 1;
+
+	Coords previousCoord = snakeMap[lastIndex];
+
+	buffer[previousCoord.x][previousCoord.y].Char.AsciiChar = 'H';
+	buffer[previousCoord.x][previousCoord.y].Attributes = GetASCIIColor(Color::Transparent, Color::Transparent);
 }
 
+//Update the buffer to make the snake moving
 void UpdateTiles(int pX=0, int pY=0) {
 	
+	Coords snakeHeadCoord = snakeMap[0];
+
+	//Block the snake from moving outside the boards
 	//As -- = + we should invert the tests
-	if ((x + pX) < 0 || (x + pX) > SCREEN_HEIGHT - 1) pX = 0;
-	if ((y + pY) < 0 || (y + pY) > SCREEN_WIDTH - 1) pY = 0;
+	if ((snakeHeadCoord.x + pX) < 0 || (snakeHeadCoord.x + pX) > SCREEN_HEIGHT - 1) pX = 0;
+	if ((snakeHeadCoord.y + pY) < 0 || (snakeHeadCoord.y + pY) > SCREEN_WIDTH - 1) pY = 0;
 
-	buffer[x + pX][y + pY].Char.AsciiChar = 'H';
-	buffer[x + pX][y + pY].Attributes = GetASCIIColor(Color::LightYellow, Color::Transparent);
+	buffer[snakeHeadCoord.x + pX][snakeHeadCoord.y + pY].Char.AsciiChar = 'H';
+	buffer[snakeHeadCoord.x + pX][snakeHeadCoord.y + pY].Attributes = GetASCIIColor(Color::LightYellow, Color::Transparent);
 
-	x += pX;
-	y += pY;
+	Coords newSnakeHeadCoord(snakeHeadCoord.x + pX, snakeHeadCoord.y + pY);
+
+	snakeMap[0] = newSnakeHeadCoord;
 }
 
 int main()
 {
+#pragma region Test Buffer
+
 	HANDLE hOutput = (HANDLE)GetStdHandle(STD_OUTPUT_HANDLE);
 
 	COORD dwBufferSize = { SCREEN_WIDTH, SCREEN_HEIGHT };
@@ -79,17 +107,30 @@ int main()
 	ReadConsoleOutput(hOutput, (CHAR_INFO *)buffer, dwBufferSize,
 		dwBufferCoord, &rcRegion);
 
-	buffer[5][10].Char.AsciiChar = 'H';
+	/*buffer[5][10].Char.AsciiChar = 'H';
 	buffer[5][10].Attributes = 0x0E;
 	buffer[5][11].Char.AsciiChar = 'i';
 	buffer[5][11].Attributes = 0x0B;
 	buffer[5][12].Char.AsciiChar = '!';
-	buffer[5][12].Attributes = 0x0A;
+	buffer[5][12].Attributes = 0x0A;*/
 
 	WriteConsoleOutput(hOutput, (CHAR_INFO *)buffer, dwBufferSize,
 		dwBufferCoord, &rcRegion);
 
 	GameManager* gm = GameManager::GetInstance();
+#pragma endregion
+
+	Coords firstCoords(10, 10);
+	Coords secondCoords(10, 11);
+	Coords thirdCoords(10, 12);
+
+	snakeMap.insert(std::make_pair(0, firstCoords));
+	/*snakeMap.insert(std::make_pair(0, secondCoords));
+	snakeMap.insert(std::make_pair(0, thirdCoords));*/
+
+	//int test = snakeMap[0].x;
+	//snakeMap[0] = firstCoords;
+	
 
 	while (1)
 	{
