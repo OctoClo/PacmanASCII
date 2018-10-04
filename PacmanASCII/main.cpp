@@ -5,85 +5,11 @@
 #include "GameManager.h"
 
 #define WIN32_LEAN_AND_MEAN
-#define SCREEN_WIDTH 250
-#define SCREEN_HEIGHT 500
-
-using namespace std;
-
-CHAR_INFO buffer[SCREEN_HEIGHT][SCREEN_WIDTH];
-
-int x = 0;
-int y = 0;
 
 int main()
 {
-	HANDLE hOutput = (HANDLE)GetStdHandle(STD_OUTPUT_HANDLE);
-
-	COORD dwBufferSize = { SCREEN_WIDTH, SCREEN_HEIGHT };
-	COORD dwBufferCoord = { 0, 0 };
-	SMALL_RECT rcRegion = { 0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1 };
-
-	//CHAR_INFO buffer[SCREEN_HEIGHT][SCREEN_WIDTH];
-
-	// Hide blinking caret
-	CONSOLE_CURSOR_INFO cursorInfo;
-	GetConsoleCursorInfo(hOutput, &cursorInfo);
-	cursorInfo.bVisible = false;
-	SetConsoleCursorInfo(hOutput, &cursorInfo);
-
-	ReadConsoleOutput(hOutput, (CHAR_INFO *)buffer, dwBufferSize,
-		dwBufferCoord, &rcRegion);
-
-	buffer[5][10].Char.AsciiChar = 'H';
-	buffer[5][10].Attributes = 0x0E;
-	buffer[5][11].Char.AsciiChar = 'i';
-	buffer[5][11].Attributes = 0x0B;
-	buffer[5][12].Char.AsciiChar = '!';
-	buffer[5][12].Attributes = 0x0A;
-
-	WriteConsoleOutput(hOutput, (CHAR_INFO *)buffer, dwBufferSize,
-		dwBufferCoord, &rcRegion);
-
 	GameManager* gm = GameManager::GetInstance();
-
-	while (1)
-	{
-		int key = 0;
-
-		if (_kbhit())
-		{
-			key = _getch();
-
-			switch (key) {
-			case 'z':
-				buffer[x][y].Char.AsciiChar = 'H';
-				buffer[x][y].Attributes = 0x0A;
-				WriteConsoleOutput(hOutput, (CHAR_INFO *)buffer, dwBufferSize,
-					dwBufferCoord, &rcRegion);
-				break;
-
-			case 's':
-				printf("s");
-				break;
-
-			case 'q':
-				printf("q");
-				break;
-
-			case 'd':
-				printf("d");
-				break;
-
-			default:
-				break;
-			}
-		}
-		/*if (_kbhit())
-		{
-			break;
-		}*/
-	}
-
+	gm->GameLoop();
 
 	return 0;
 }

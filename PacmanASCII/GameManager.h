@@ -3,12 +3,37 @@
 
 #pragma once
 
+#include "stdafx.h"
+#include "Renderer.h"
+#include "LevelManager.h"
+
+enum EGameState
+{
+	Play,
+	Menu,
+	Quit
+};
+
 class GameManager
 {
 public:
+	void GameLoop();
+
 	static GameManager* GetInstance();
 
 private:
-	static GameManager* _instance;		
+	void Init();
+	void Start();
+
+	void ProcessInputs();
+	void Update();
+	void Render();
+
+	EGameState _gameState;
+
+	LevelManager* _levelManager;
+	Renderer* _renderer;
+
+	static GameManager* _instance;
 };
 #endif
