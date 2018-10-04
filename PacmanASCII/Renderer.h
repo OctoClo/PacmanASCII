@@ -7,26 +7,7 @@
 #define SCREEN_HEIGHT 25
 
 #include "stdafx.h"
-
-enum EColor {
-	Transparent,
-	Blue,
-	Green,
-	Cyan,
-	Red,
-	Purple,
-	Yellow,
-	White,
-	Grey,
-	LightBlue,
-	LightGreen,
-	LightCyan,
-	LightRed,
-	LightPurple,
-	LightYellow,
-	LightWhite,
-	LightGrey
-};
+#include "Enums.h"
 
 class Renderer
 {
@@ -35,6 +16,7 @@ public:
 
 	void Render();
 
+	void ClearScreen();
 	void DrawChar(int pX, int pY, char pAsciiChar, EColor pForeground, EColor pBackground = EColor::Transparent);
 
 	static Renderer* GetInstance();

@@ -30,11 +30,6 @@ void LevelManager::Start()
 	SpawnCollectible();
 }
 
-void LevelManager::ProcessInputs(int pKey)
-{
-	
-}
-
 void LevelManager::Update()
 {
 	

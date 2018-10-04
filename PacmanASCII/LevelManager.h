@@ -10,16 +10,8 @@
 #define START_SNAKE_SIZE 3
 
 #include "stdafx.h"
+#include "Enums.h"
 #include "Renderer.h"
-
-enum ETile
-{
-	Nothing,
-	Wall,
-	SnakeHead,
-	SnakeBody,
-	Collectible
-};
 
 class LevelManager
 {
@@ -27,7 +19,6 @@ public:
 	void Init(Renderer* pRenderer);
 	void Start();
 
-	void ProcessInputs(int pKey);
 	void Update();
 	void Render();
 
