@@ -143,6 +143,13 @@ int LevelManager::MoveSnake(int pDirX, int pDirY)
 	return CORRECT_MOVE;
 }
 
+void LevelManager::UpdateSnake() {
+
+	SnakePiece lastSnakePiece = _snake.back();
+
+	_snake.push_back(SnakePiece(lastSnakePiece.x , lastSnakePiece.y + 1, lastSnakePiece.pieceType));
+}
+
 void LevelManager::TileToChar(ETile& pTile, char& pAsciiChar, EColor& pForeground)
 {
 	switch (pTile)
