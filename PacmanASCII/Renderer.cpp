@@ -35,6 +35,11 @@ void Renderer::Render()
 		_screenBufferCoord, &_rectRegion);
 }
 
+void Renderer::ClearChar(int pX, int pY)
+{
+	_screenBuffer[pX][pY] = {};
+}
+
 void Renderer::ClearScreen()
 {
 	for (int x = 0; x < SCREEN_HEIGHT; x++)

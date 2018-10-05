@@ -58,13 +58,11 @@ void GameManager::ProcessInputs()
 			_gameState = EGameState::Exit;
 		}
 
-		switch (_gameState)
+		switch (key)
 		{
-		case EGameState::Menu:
-			// Listen for arrow / enter keys
-			switch (key)
+		case KEY_ENTER:
+			if (_gameState == EGameState::Menu)
 			{
-			case KEY_ENTER:
 				switch (_uiManager->GetCurrentButton())
 				{
 				case EButton::Start: case EButton::Restart:
@@ -76,31 +74,64 @@ void GameManager::ProcessInputs()
 					_gameState = EGameState::Exit;
 					break;
 				}
-				break;
-
-			case KEY_Z: case KEY_Z_CAPITAL:
-				if (_uiManager->GetCurrentButton() == EButton::Quit)
-				{
-					if (_uiManager->GetCurrentMenu() == EMenuType::Begin)
-					{
-						_uiManager->SetCurrentButton(
-							(_uiManager->GetCurrentMenu() == EMenuType::Begin) ?
-							EButton::Start : EButton::Restart);
-					}
-				}
-				break;
-
-			case KEY_S: case KEY_S_CAPITAL:
-				if (_uiManager->GetCurrentButton() != EButton::Quit)
-				{
-					_uiManager->SetCurrentButton(EButton::Quit);
-				}
-				break;
 			}
 			break;
 
-		case EGameState::Play:
-			// Listen for arrow keys
+		case KEY_Z: case KEY_Z_CAPITAL:
+			if (_gameState == EGameState::Menu &&
+				_uiManager->GetCurrentButton() == EButton::Quit &&
+				_uiManager->GetCurrentMenu() == EMenuType::Begin)
+			{
+				_uiManager->SetCurrentButton(
+					(_uiManager->GetCurrentMenu() == EMenuType::Begin) ?
+					EButton::Start : EButton::Restart);
+			}
+			else if (_gameState == EGameState::Play)
+			{
+				if (_levelManager->MoveSnake(-1, 0) != CORRECT_MOVE)
+				{
+					_gameState = EGameState::Menu;
+					_uiManager->LaunchEndMenu();
+				}
+			}
+			break;
+
+		case KEY_Q: case KEY_Q_CAPITAL:
+			if (_gameState == EGameState::Play)
+			{
+				if (_levelManager->MoveSnake(0, -1) != CORRECT_MOVE)
+				{
+					_gameState = EGameState::Menu;
+					_uiManager->LaunchEndMenu();
+				}
+			}
+			break;
+
+		case KEY_S: case KEY_S_CAPITAL:
+			if (_gameState == EGameState::Menu &&
+				_uiManager->GetCurrentButton() != EButton::Quit)
+			{
+				_uiManager->SetCurrentButton(EButton::Quit);
+			}
+			else if (_gameState == EGameState::Play)
+			{
+				if (_levelManager->MoveSnake(1, 0) != CORRECT_MOVE)
+				{
+					_gameState = EGameState::Menu;
+					_uiManager->LaunchEndMenu();
+				}
+			}
+			break;
+
+		case KEY_D: case KEY_D_CAPITAL:
+			if (_gameState == EGameState::Play)
+			{
+				if (_levelManager->MoveSnake(0, 1) != CORRECT_MOVE)
+				{
+					_gameState = EGameState::Menu;
+					_uiManager->LaunchEndMenu();
+				}
+			}
 			break;
 		}
 	}

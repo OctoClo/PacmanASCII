@@ -13,6 +13,7 @@ public:
 
 	void Render();
 
+	void ClearChar(int pX, int pY);
 	void ClearScreen();
 	void DrawChar(int pX, int pY, char pAsciiChar, EColor pForeground, EColor pBackground = EColor::Transparent);
 
