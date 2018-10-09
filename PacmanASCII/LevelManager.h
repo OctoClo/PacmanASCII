@@ -1,7 +1,7 @@
 #pragma once
 
 #define START_SCORE 0
-#define MAX_LIVES 3
+#define SCORE_INCREMENT 100
 
 #define START_SNAKE_HEAD_X 12
 #define START_SNAKE_HEAD_Y 80
@@ -39,7 +39,6 @@ public:
 	void Init(Renderer* pRenderer);
 	void Start();
 
-	void Update();
 	void UpdateRenderer();
 
 	int MoveSnake(int pDirX, int pDirY);
@@ -52,11 +51,10 @@ private:
 	void FillBoard();
 	void SpawnCollectible();
 	void CleanLastTile(int pLastIndex);
-	int CheckCollisions();
+	int CheckCollisions(int pDirX, int pDirY);
 	void TileToChar(ETile& pTile, char& pAsciiChar, EColor& pForeground);
 
 	int _score;
-	int _lives;
 	ETile _board[SCREEN_HEIGHT][SCREEN_WIDTH];
 
 	vector<SnakePiece> _snake;

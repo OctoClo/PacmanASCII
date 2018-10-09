@@ -21,7 +21,6 @@ void GameManager::GameLoop()
 	while (_gameState != EGameState::Exit)
 	{
 		ProcessInputs();
-		Update();
 		UpdateRenderer();
 		Render();
 	}
@@ -80,8 +79,8 @@ void GameManager::ProcessInputs()
 
 		case KEY_Z: case KEY_Z_CAPITAL:
 			if (_gameState == EGameState::Menu &&
-				_menuManager->GetCurrentButton() == EButton::Quit &&
-				_menuManager->GetCurrentMenu() == EMenuType::Begin)
+				(_menuManager->GetCurrentButton() == EButton::Quit ||
+				_menuManager->GetCurrentMenu() == EMenuType::Begin))
 			{
 				_menuManager->SetCurrentButton(
 					(_menuManager->GetCurrentMenu() == EMenuType::Begin) ?
@@ -136,12 +135,6 @@ void GameManager::ProcessInputs()
 			break;
 		}
 	}
-}
-
-void GameManager::Update()
-{
-	if (_gameState == EGameState::Play)
-		_levelManager->Update();
 }
 
 void GameManager::UpdateRenderer()

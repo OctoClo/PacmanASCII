@@ -34,7 +34,6 @@ private:
 	void Start();
 
 	void ProcessInputs();
-	void Update();
 	void UpdateRenderer();
 	void Render();
 

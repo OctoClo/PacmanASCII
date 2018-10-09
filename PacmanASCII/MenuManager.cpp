@@ -28,6 +28,7 @@ void MenuManager::LaunchBeginMenu()
 
 void MenuManager::LaunchEndMenu()
 {
+	_renderer->ClearScreen();
 	_currentMenu = EMenuType::End;
 	_currentButton = EButton::Restart;
 }

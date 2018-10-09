@@ -17,7 +17,6 @@ LevelManager* LevelManager::GetInstance()
 void LevelManager::Init(Renderer* pRenderer)
 {
 	_renderer = pRenderer;
-	FillBoard();
 
 	_uiManager = UiManager::GetInstance();
 	_uiManager->Init(_renderer);
@@ -26,19 +25,15 @@ void LevelManager::Init(Renderer* pRenderer)
 void LevelManager::Start()
 {
 	_score = START_SCORE;
-	_lives = MAX_LIVES;
 
-	_uiManager->Start(_score, _lives);
+	_uiManager->Start(_score);
+
+	FillBoard();
 
 	CreateSnake();
 	SpawnCollectible();
 
 	RenderBoard();
-}
-
-void LevelManager::Update()
-{
-	
 }
 
 void LevelManager::UpdateRenderer()
@@ -81,6 +76,8 @@ void LevelManager::RenderBoard()
 
 void LevelManager::CreateSnake()
 {
+	_snake.clear();
+
 	_snake.push_back(SnakePiece(START_SNAKE_HEAD_X, START_SNAKE_HEAD_Y, ETile::SnakeHead));
 
 	for (int snakeIndex = 1; snakeIndex < START_SNAKE_SIZE; snakeIndex++)
@@ -91,11 +88,12 @@ void LevelManager::CreateSnake()
 
 void LevelManager::FillBoard()
 {
-	// Create 2 vertical walls
 	int startX = 1;
 	int startY = 0;
 	int maxX = SCREEN_HEIGHT - 2;
 	int maxY = SCREEN_WIDTH - 1;
+
+	// Create 2 vertical walls
 	for (int x = startX; x < maxX; x++)
 	{
 		_board[x][startY] = ETile::Wall;
@@ -112,13 +110,16 @@ void LevelManager::FillBoard()
 
 void LevelManager::SpawnCollectible()
 {
-	// Spawn a collectible at a random position
-	_board[10][20] = ETile::Collectible;
-}
+	int randomX = rand() % SCREEN_HEIGHT;
+	int randomY = rand() % SCREEN_WIDTH;
 
-int LevelManager::CheckCollisions()
-{
-	return CORRECT_MOVE;
+	_board[randomX][randomY] = ETile::Collectible;
+
+	ETile tile = ETile::Collectible;
+	char asciiChar;
+	EColor foregroundColor;
+	TileToChar(tile, asciiChar, foregroundColor);
+	_renderer->DrawChar(randomX, randomY, asciiChar, foregroundColor);
 }
 
 void LevelManager::CleanLastTile(int pLastIndex)
@@ -128,6 +129,11 @@ void LevelManager::CleanLastTile(int pLastIndex)
 
 int LevelManager::MoveSnake(int pDirX, int pDirY)
 {
+	if (CheckCollisions(pDirX, pDirY) == INCORRECT_MOVE)
+	{
+		return INCORRECT_MOVE;
+	}
+	
 	int lastTileIndex = _snake.size() - 1;
 
 	CleanLastTile(lastTileIndex);
@@ -141,9 +147,26 @@ int LevelManager::MoveSnake(int pDirX, int pDirY)
 	_snake[0].x += pDirX;
 	_snake[0].y += pDirY;
 
-	//Block the snake from moving outside the boards
-	//if ((snakeHeadCoord.x + pDirX) < 0 || (snakeHeadCoord.x + pDirX) > SCREEN_HEIGHT - 1) pDirX = 0;
-	//if ((snakeHeadCoord.y + pDirY) < 0 || (snakeHeadCoord.y + pDirY) > SCREEN_WIDTH - 1) pDirY = 0;
+	return CORRECT_MOVE;
+}
+
+int LevelManager::CheckCollisions(int pDirX, int pDirY)
+{
+	int newX = _snake[0].x + pDirX;
+	int newY = _snake[0].y + pDirY;
+	ETile newTile = _board[newX][newY];
+
+	if (newTile == ETile::Collectible)
+	{
+		_score += SCORE_INCREMENT;
+		_uiManager->SetScore(_score);
+		SpawnCollectible();
+		_board[newX][newY] = ETile::Nothing;
+	}
+	else if (newTile == ETile::SnakeBody || newTile == ETile::Wall)
+	{
+		return INCORRECT_MOVE;
+	}
 
 	return CORRECT_MOVE;
 }
