@@ -17,63 +17,26 @@ UiManager* UiManager::GetInstance()
 void UiManager::Init(Renderer* pRenderer)
 {
 	_renderer = pRenderer;
-	LaunchBeginMenu();
+
+	livesStrings[0] = STRING_1_LIFE;
+	livesStrings[1] = STRING_2_LIVES;
+	livesStrings[2] = STRING_3_LIVES;
 }
 
-void UiManager::LaunchBeginMenu()
+void UiManager::Start(int pScore, int pLives)
 {
-	_currentMenu = EMenuType::Begin;
-	_currentButton = EButton::Start;
+	_score = pScore;
+	_lives = pLives;
+	DrawUi();
 }
 
-void UiManager::LaunchEndMenu()
+void UiManager::DrawUi()
 {
-	_currentMenu = EMenuType::End;
-	_currentButton = EButton::Restart;
-}
+	_renderer->DrawString(STRING_LIVES_X, STRING_LIVES_Y, STRING_LIVES, EColor::White);
+	_renderer->DrawString(STRING_NB_LIVES_X, STRING_NB_LIVES_Y, livesStrings[_lives - 1], EColor::White);
 
-void UiManager::Render()
-{
-	DisplayMenu();
-
-	switch (_currentButton)
-	{
-	case EButton::Start:
-		_renderer->DrawChar(QUIT_BUTTON_X, ARROW_Y, ' ', EColor::Transparent);
-		_renderer->DrawChar(START_BUTTON_X, ARROW_Y, '-', EColor::LightPurple);
-		break;
-	case EButton::Restart:
-		_renderer->DrawChar(QUIT_BUTTON_X, ARROW_Y, ' ', EColor::Transparent);
-		_renderer->DrawChar(RESTART_BUTTON_X, ARROW_Y, '-', EColor::LightPurple);
-		break;
-	case EButton::Quit:
-		_renderer->DrawChar(START_BUTTON_X, ARROW_Y, ' ', EColor::Transparent);
-		_renderer->DrawChar(QUIT_BUTTON_X, ARROW_Y, '-', EColor::LightPurple);
-		break;
-	}
-}
-
-void UiManager::DisplayMenu()
-{
-	switch (_currentMenu)
-	{
-	case EMenuType::Begin:
-		DisplayButton(START_BUTTON_TEXT, START_BUTTON_X, BUTTON_Y);
-		DisplayButton(QUIT_BUTTON_TEXT, QUIT_BUTTON_X, BUTTON_Y);
-		break;
-
-	case EMenuType::End:
-		DisplayButton(RESTART_BUTTON_TEXT, RESTART_BUTTON_X, BUTTON_Y);
-		DisplayButton(QUIT_BUTTON_TEXT, QUIT_BUTTON_X, BUTTON_Y);
-		break;
-	}
-}
-
-void UiManager::DisplayButton(string pButton, int pX, int pY)
-{
-	int length = pButton.length();
-	for (int currentChar = 0; currentChar < length; currentChar++)
-	{
-		_renderer->DrawChar(pX, pY + currentChar, pButton[currentChar], EColor::White);
-	}
+	_renderer->DrawString(STRING_SCORE_X, STRING_SCORE_Y, STRING_SCORE, EColor::White);
+	_renderer->DrawString(STRING_SCORE_COUNTER_X, STRING_SCORE_COUNTER_Y, to_string(_score), EColor::White);
+	
+	_renderer->DrawString(STRING_INFO_X, STRING_INFO_Y, STRING_INFO, EColor::White);
 }

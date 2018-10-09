@@ -18,12 +18,17 @@ void LevelManager::Init(Renderer* pRenderer)
 {
 	_renderer = pRenderer;
 	FillBoard();
+
+	_uiManager = UiManager::GetInstance();
+	_uiManager->Init(_renderer);
 }
 
 void LevelManager::Start()
 {
 	_score = START_SCORE;
 	_lives = MAX_LIVES;
+
+	_uiManager->Start(_score, _lives);
 
 	CreateSnake();
 	SpawnCollectible();
@@ -36,7 +41,7 @@ void LevelManager::Update()
 	
 }
 
-void LevelManager::Render()
+void LevelManager::UpdateRenderer()
 {
 	ETile pieceType;
 	char asciiChar;
@@ -148,22 +153,22 @@ void LevelManager::TileToChar(ETile& pTile, char& pAsciiChar, EColor& pForegroun
 	switch (pTile)
 	{
 	case ETile::Wall:
-		pAsciiChar = '#';
+		pAsciiChar = CHAR_WALL;
 		pForeground = EColor::Cyan;
 		break;
 
 	case ETile::SnakeHead:
-		pAsciiChar = '@';
+		pAsciiChar = CHAR_SNAKE_HEAD;
 		pForeground = EColor::LightYellow;
 		break;
 
 	case ETile::SnakeBody:
-		pAsciiChar = 'o';
+		pAsciiChar = CHAR_SNAKE_BODY;
 		pForeground = EColor::Yellow;
 		break;
 
 	case ETile::Collectible:
-		pAsciiChar = '*';
+		pAsciiChar = CHAR_COLLECTIBLE;
 		pForeground = EColor::LightGreen;
 		break;
 	}

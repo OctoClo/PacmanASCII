@@ -51,6 +51,17 @@ void Renderer::ClearScreen()
 	}
 }
 
+void Renderer::DrawString(int pX, int pY, string pString, EColor pForeground, EColor pBackground)
+{
+	int length = pString.length();
+
+	for (int i = 0; i < length; i++)
+	{
+		_screenBuffer[pX][pY + i].Char.AsciiChar = pString[i];
+		_screenBuffer[pX][pY + i].Attributes = GetASCIIColor(pForeground, pBackground);
+	}
+}
+
 void Renderer::DrawChar(int pX, int pY, char asciiChar, EColor pForeground, EColor pBackground)
 {
 	_screenBuffer[pX][pY].Char.AsciiChar = asciiChar;

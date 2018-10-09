@@ -15,6 +15,7 @@ public:
 
 	void ClearChar(int pX, int pY);
 	void ClearScreen();
+	void DrawString(int pX, int pY, string pString, EColor pForeground, EColor pBackground = EColor::Transparent);
 	void DrawChar(int pX, int pY, char pAsciiChar, EColor pForeground, EColor pBackground = EColor::Transparent);
 
 	static Renderer* GetInstance();

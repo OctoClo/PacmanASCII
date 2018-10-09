@@ -19,6 +19,7 @@
 #include "Enums.h"
 #include "Renderer.h"
 #include "LevelManager.h"
+#include "MenuManager.h"
 #include "UiManager.h"
 
 class GameManager
@@ -34,12 +35,13 @@ private:
 
 	void ProcessInputs();
 	void Update();
+	void UpdateRenderer();
 	void Render();
 
 	EGameState _gameState;
 
 	LevelManager* _levelManager;
-	UiManager* _uiManager;
+	MenuManager* _menuManager;
 	Renderer* _renderer;
 
 	static GameManager* _instance;

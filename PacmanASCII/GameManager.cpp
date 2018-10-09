@@ -22,6 +22,7 @@ void GameManager::GameLoop()
 	{
 		ProcessInputs();
 		Update();
+		UpdateRenderer();
 		Render();
 	}
 }
@@ -36,8 +37,8 @@ void GameManager::Init()
 	_levelManager = LevelManager::GetInstance();
 	_levelManager->Init(_renderer);
 
-	_uiManager = UiManager::GetInstance();
-	_uiManager->Init(_renderer);
+	_menuManager = MenuManager::GetInstance();
+	_menuManager->Init(_renderer);
 }
 
 void GameManager::Start()
@@ -63,7 +64,7 @@ void GameManager::ProcessInputs()
 		case KEY_ENTER:
 			if (_gameState == EGameState::Menu)
 			{
-				switch (_uiManager->GetCurrentButton())
+				switch (_menuManager->GetCurrentButton())
 				{
 				case EButton::Start: case EButton::Restart:
 					_renderer->ClearScreen();
@@ -79,11 +80,11 @@ void GameManager::ProcessInputs()
 
 		case KEY_Z: case KEY_Z_CAPITAL:
 			if (_gameState == EGameState::Menu &&
-				_uiManager->GetCurrentButton() == EButton::Quit &&
-				_uiManager->GetCurrentMenu() == EMenuType::Begin)
+				_menuManager->GetCurrentButton() == EButton::Quit &&
+				_menuManager->GetCurrentMenu() == EMenuType::Begin)
 			{
-				_uiManager->SetCurrentButton(
-					(_uiManager->GetCurrentMenu() == EMenuType::Begin) ?
+				_menuManager->SetCurrentButton(
+					(_menuManager->GetCurrentMenu() == EMenuType::Begin) ?
 					EButton::Start : EButton::Restart);
 			}
 			else if (_gameState == EGameState::Play)
@@ -91,7 +92,7 @@ void GameManager::ProcessInputs()
 				if (_levelManager->MoveSnake(-1, 0) != CORRECT_MOVE)
 				{
 					_gameState = EGameState::Menu;
-					_uiManager->LaunchEndMenu();
+					_menuManager->LaunchEndMenu();
 				}
 			}
 			break;
@@ -102,23 +103,23 @@ void GameManager::ProcessInputs()
 				if (_levelManager->MoveSnake(0, -1) != CORRECT_MOVE)
 				{
 					_gameState = EGameState::Menu;
-					_uiManager->LaunchEndMenu();
+					_menuManager->LaunchEndMenu();
 				}
 			}
 			break;
 
 		case KEY_S: case KEY_S_CAPITAL:
 			if (_gameState == EGameState::Menu &&
-				_uiManager->GetCurrentButton() != EButton::Quit)
+				_menuManager->GetCurrentButton() != EButton::Quit)
 			{
-				_uiManager->SetCurrentButton(EButton::Quit);
+				_menuManager->SetCurrentButton(EButton::Quit);
 			}
 			else if (_gameState == EGameState::Play)
 			{
 				if (_levelManager->MoveSnake(1, 0) != CORRECT_MOVE)
 				{
 					_gameState = EGameState::Menu;
-					_uiManager->LaunchEndMenu();
+					_menuManager->LaunchEndMenu();
 				}
 			}
 			break;
@@ -129,7 +130,7 @@ void GameManager::ProcessInputs()
 				if (_levelManager->MoveSnake(0, 1) != CORRECT_MOVE)
 				{
 					_gameState = EGameState::Menu;
-					_uiManager->LaunchEndMenu();
+					_menuManager->LaunchEndMenu();
 				}
 			}
 			break;
@@ -143,18 +144,21 @@ void GameManager::Update()
 		_levelManager->Update();
 }
 
-void GameManager::Render()
+void GameManager::UpdateRenderer()
 {
 	switch (_gameState)
 	{
 	case EGameState::Menu:
-		_uiManager->Render();
+		_menuManager->UpdateRenderer();
 		break;
 
 	case EGameState::Play:
-		_levelManager->Render();
+		_levelManager->UpdateRenderer();
 		break;
 	}
+}
 
+void GameManager::Render()
+{
 	_renderer->Render();
 }

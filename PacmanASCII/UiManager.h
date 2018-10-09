@@ -1,43 +1,52 @@
 #pragma once
 
-#define START_BUTTON_TEXT "START"
-#define START_BUTTON_X 5
+#define STRING_LIVES "LIFES: "
+#define STRING_LIVES_X 0
+#define STRING_LIVES_Y 1
 
-#define RESTART_BUTTON_TEXT "RESTART"
-#define RESTART_BUTTON_X 5
+#define STRING_3_LIVES "OOO"
+#define STRING_2_LIVES "OOØ"
+#define STRING_1_LIFE "OØØ"
+#define STRING_NB_LIVES_X 0
+#define STRING_NB_LIVES_Y 8
 
-#define QUIT_BUTTON_TEXT "QUIT"
-#define QUIT_BUTTON_X 10
+#define STRING_SCORE "SCORE: "
+#define STRING_SCORE_X 0
+#define STRING_SCORE_Y 87
+
+#define STRING_SCORE_COUNTER_X 0
+#define STRING_SCORE_COUNTER_Y 94
+
+#define STRING_INFO "Press ESC to quit"
+#define STRING_INFO_X 24
+#define STRING_INFO_Y 80
 
 #include "stdafx.h"
 #include "Enums.h"
 #include "Renderer.h"
 
-#define BUTTON_Y (SCREEN_WIDTH / 2)
-#define ARROW_Y (BUTTON_Y - 2)
-
 class UiManager
 {
 public:
 	void Init(Renderer* pRenderer);
+	void Start(int pScore, int pLives);
 
-	void LaunchBeginMenu();
-	void LaunchEndMenu();
+	void SetScore(int pScore) { _score = pScore; DrawUi(); }
+	int GetScore() { return _score; }
 
-	void Render();
-
-	EMenuType GetCurrentMenu() { return _currentMenu; }
-	void SetCurrentButton(EButton pButton) { _currentButton = pButton; }
-	EButton GetCurrentButton() { return _currentButton; }
+	void SetLives(int pLives) { _lives = pLives; DrawUi(); }
+	int GetLives() { return _lives; }
 
 	static UiManager* GetInstance();
 
 private:
-	void DisplayMenu();
-	void DisplayButton(string pButton, int pX, int pY);
+	void DrawUi();
 
-	EMenuType _currentMenu;
-	EButton _currentButton;
+	int _score;
+	int _lives;
+
+	string livesStrings[3];
+
 	Renderer* _renderer;
 
 	static UiManager* _instance;

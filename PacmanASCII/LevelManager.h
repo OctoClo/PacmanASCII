@@ -10,9 +10,15 @@
 #define INCORRECT_MOVE 0
 #define CORRECT_MOVE 1
 
+#define CHAR_WALL '#'
+#define CHAR_SNAKE_HEAD '@'
+#define CHAR_SNAKE_BODY 'o'
+#define CHAR_COLLECTIBLE '¤'
+
 #include "stdafx.h"
 #include "Enums.h"
 #include "Renderer.h"
+#include "UiManager.h"
 
 struct SnakePiece
 {
@@ -34,7 +40,7 @@ public:
 	void Start();
 
 	void Update();
-	void Render();
+	void UpdateRenderer();
 
 	int MoveSnake(int pDirX, int pDirY);
 
@@ -55,6 +61,7 @@ private:
 
 	vector<SnakePiece> _snake;
 
+	UiManager* _uiManager;
 	Renderer* _renderer;
 
 	static LevelManager* _instance;
