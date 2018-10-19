@@ -127,9 +127,9 @@ void GameManager::ProcessInputs()
 			//TEST
 			/*if (_gameState == EGameState::Play)
 			{
-				_levelManager->UpdateSnake();
-			}*/
-			break;
+				_levelManager->EnlargeSnake();
+			}
+			break;*/
 			if (_gameState == EGameState::Play)
 			{
 				if (_levelManager->MoveSnake(0, 1) != CORRECT_MOVE)

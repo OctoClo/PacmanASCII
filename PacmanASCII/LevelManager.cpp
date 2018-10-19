@@ -54,6 +54,7 @@ void LevelManager::Render()
 	}
 }
 
+//CHANGER LE NOM
 void LevelManager::RenderBoard()
 {
 	ETile tile;
@@ -71,16 +72,6 @@ void LevelManager::RenderBoard()
 				_renderer->DrawChar(x, y, asciiChar, foregroundColor);
 			}
 		}
-	}
-}
-
-void LevelManager::CreateSnake()
-{
-	_snake.push_back(SnakePiece(START_SNAKE_HEAD_X, START_SNAKE_HEAD_Y, ETile::SnakeHead));
-
-	for (int snakeIndex = 1; snakeIndex < START_SNAKE_SIZE; snakeIndex++)
-	{
-		_snake.push_back(SnakePiece(START_SNAKE_HEAD_X, START_SNAKE_HEAD_Y + snakeIndex, ETile::SnakeBody));
 	}
 }
 
@@ -111,43 +102,14 @@ void LevelManager::SpawnCollectible()
 	_board[10][20] = ETile::Collectible;
 }
 
-int LevelManager::CheckCollisions()
+/*int LevelManager::CheckCollisions(int pX = 0; int pY = 0)
 {
 	return CORRECT_MOVE;
-}
+}*/
 
 void LevelManager::CleanLastTile(int pLastIndex)
 {
 	_renderer->ClearChar(_snake[pLastIndex].x, _snake[pLastIndex].y);
-}
-
-int LevelManager::MoveSnake(int pDirX, int pDirY)
-{
-	int lastTileIndex = _snake.size() - 1;
-
-	CleanLastTile(lastTileIndex);
-
-	for (int tileIndex = lastTileIndex; tileIndex > 0; tileIndex--)
-	{
-		_snake[tileIndex].x = _snake[tileIndex - 1].x;
-		_snake[tileIndex].y = _snake[tileIndex - 1].y;
-	}
-
-	_snake[0].x += pDirX;
-	_snake[0].y += pDirY;
-
-	//Block the snake from moving outside the boards
-	//if ((snakeHeadCoord.x + pDirX) < 0 || (snakeHeadCoord.x + pDirX) > SCREEN_HEIGHT - 1) pDirX = 0;
-	//if ((snakeHeadCoord.y + pDirY) < 0 || (snakeHeadCoord.y + pDirY) > SCREEN_WIDTH - 1) pDirY = 0;
-
-	return CORRECT_MOVE;
-}
-
-void LevelManager::UpdateSnake() {
-
-	SnakePiece lastSnakePiece = _snake.back();
-
-	_snake.push_back(SnakePiece(lastSnakePiece.x , lastSnakePiece.y + 1, lastSnakePiece.pieceType));
 }
 
 void LevelManager::TileToChar(ETile& pTile, char& pAsciiChar, EColor& pForeground)
@@ -174,4 +136,44 @@ void LevelManager::TileToChar(ETile& pTile, char& pAsciiChar, EColor& pForegroun
 		pForeground = EColor::LightGreen;
 		break;
 	}
+}
+
+//CREER UNE CLASSE SNAKE?
+void LevelManager::CreateSnake()
+{
+	_snake.push_back(SnakePiece(START_SNAKE_HEAD_X, START_SNAKE_HEAD_Y, ETile::SnakeHead));
+
+	for (int snakeIndex = 1; snakeIndex < START_SNAKE_SIZE; snakeIndex++)
+	{
+		_snake.push_back(SnakePiece(START_SNAKE_HEAD_X, START_SNAKE_HEAD_Y + snakeIndex, ETile::SnakeBody));
+	}
+}
+
+int LevelManager::MoveSnake(int pDirX, int pDirY)
+{
+	int lastTileIndex = _snake.size() - 1;
+
+	CleanLastTile(lastTileIndex);
+
+	for (int tileIndex = lastTileIndex; tileIndex > 0; tileIndex--)
+	{
+		_snake[tileIndex].x = _snake[tileIndex - 1].x;
+		_snake[tileIndex].y = _snake[tileIndex - 1].y;
+	}
+
+	_snake[0].x += pDirX;
+	_snake[0].y += pDirY;
+
+	//Block the snake from moving outside the boards
+	//if ((snakeHeadCoord.x + pDirX) < 0 || (snakeHeadCoord.x + pDirX) > SCREEN_HEIGHT - 1) pDirX = 0;
+	//if ((snakeHeadCoord.y + pDirY) < 0 || (snakeHeadCoord.y + pDirY) > SCREEN_WIDTH - 1) pDirY = 0;
+
+	return CheckCollisions();
+}
+
+void LevelManager::EnlargeSnake() {
+
+	SnakePiece lastSnakePiece = _snake.back();
+
+	_snake.push_back(SnakePiece(lastSnakePiece.x , lastSnakePiece.y + 1, lastSnakePiece.pieceType));
 }

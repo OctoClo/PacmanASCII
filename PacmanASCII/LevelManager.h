@@ -37,7 +37,7 @@ public:
 	void Render();
 
 	int MoveSnake(int pDirX, int pDirY);
-	void UpdateSnake();
+	void EnlargeSnake();
 
 	static LevelManager* GetInstance();
 
