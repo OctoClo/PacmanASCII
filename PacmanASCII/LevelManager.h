@@ -77,6 +77,9 @@ private:
 
 	vector<SnakePiece> _snake;
 
+	bool _firstGame;
+	Coord _collectibleCoord;
+
 	UiManager* _uiManager;
 	Renderer* _renderer;
 

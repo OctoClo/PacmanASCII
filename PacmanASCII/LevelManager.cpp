@@ -17,6 +17,7 @@ LevelManager* LevelManager::GetInstance()
 void LevelManager::Init(Renderer* pRenderer)
 {
 	_renderer = pRenderer;
+	_firstGame = true;
 
 	_uiManager = UiManager::GetInstance();
 	_uiManager->Init(_renderer);
@@ -46,6 +47,11 @@ void LevelManager::Start()
 	SpawnCollectible();
 
 	RenderBoard();
+
+	if (_firstGame)
+	{
+		_firstGame = false;
+	}
 }
 
 void LevelManager::UpdateRenderer()
@@ -120,6 +126,11 @@ void LevelManager::FillBoard()
 		_board[startX][y] = ETile::Wall;
 		_board[maxX][y] = ETile::Wall;
 	}
+
+	if (!_firstGame)
+	{
+		_board[_collectibleCoord.x][_collectibleCoord.y] = ETile::Nothing;
+	}
 }
 
 void LevelManager::SpawnCollectible()
@@ -134,6 +145,8 @@ void LevelManager::SpawnCollectible()
 	EColor foregroundColor;
 	TileToChar(tile, asciiChar, foregroundColor);
 	_renderer->DrawChar(randomX, randomY, asciiChar, foregroundColor);
+
+	_collectibleCoord = Coord(randomX, randomY);
 }
 
 // Snake class
