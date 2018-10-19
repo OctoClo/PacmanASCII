@@ -1,6 +1,6 @@
 #pragma once
 
-#define MOVE_INTERVAL 1
+#define MOVE_INTERVAL_MILLIS 100
 
 #include "stdafx.h"
 #include "Enums.h"

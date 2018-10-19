@@ -11,7 +11,7 @@ void Timer::Start()
 
 bool Timer::CanMove()
 {
-	if ((clock() - Timer::startTime) / CLOCKS_PER_SEC >= MOVE_INTERVAL)
+	if ((clock() - Timer::startTime) >= MOVE_INTERVAL_MILLIS)
 	{
 		Timer::Start();
 		return true;
