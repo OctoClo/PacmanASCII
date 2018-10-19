@@ -145,7 +145,12 @@ void LevelManager::CleanLastTile(int pLastIndex)
 // Snake class
 void LevelManager::UpdateDirection(EDirection pDirection)
 {
-	currentDir = pDirection;
+	// Check if new direction is not opposed to current direction
+	// (left -> right, up -> bottom...)
+	if (pDirection != ((currentDir + 2) % 4))
+	{
+		currentDir = pDirection;
+	}
 }
 
 // Snake class
