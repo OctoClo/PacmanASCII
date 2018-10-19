@@ -20,8 +20,20 @@
 #include "Renderer.h"
 #include "UiManager.h"
 
+struct Coord
+{
+	int x, y;
+
+	Coord(int pX = 0, int pY = 0)
+	{
+		x = pX;
+		y = pY;
+	}
+};
+
 struct SnakePiece
 {
+	// Coord
 	int x, y;
 	ETile pieceType;
 
@@ -40,8 +52,9 @@ public:
 	void Start();
 
 	void UpdateRenderer();
+	void UpdateDirection(EDirection pDirection);
 
-	int MoveSnake(int pDirX, int pDirY);
+	int MoveSnake();
 	void EnlargeSnake();
 
 	static LevelManager* GetInstance();
@@ -50,13 +63,17 @@ private:
 	void RenderBoard();
 	void CreateSnake();
 	void FillBoard();
+	void InitDirectionCoordMap();
 	void SpawnCollectible();
 	void CleanLastTile(int pLastIndex);
-	int CheckCollisions(int pDirX, int pDirY);
+	int CheckCollisions();
 	void TileToChar(ETile& pTile, char& pAsciiChar, EColor& pForeground);
 
 	int _score;
 	ETile _board[SCREEN_HEIGHT][SCREEN_WIDTH];
+
+	EDirection currentDir;
+	map<EDirection, Coord> directionsCoordMap;
 
 	vector<SnakePiece> _snake;
 

@@ -21,6 +21,7 @@
 #include "LevelManager.h"
 #include "MenuManager.h"
 #include "UiManager.h"
+#include "Timer.h"
 
 class GameManager
 {

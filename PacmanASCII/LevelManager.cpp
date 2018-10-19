@@ -20,6 +20,18 @@ void LevelManager::Init(Renderer* pRenderer)
 
 	_uiManager = UiManager::GetInstance();
 	_uiManager->Init(_renderer);
+
+	InitDirectionCoordMap();
+}
+
+void LevelManager::InitDirectionCoordMap()
+{
+	directionsCoordMap.insert(pair<EDirection, Coord>(EDirection::Right, Coord(0, 1)));
+	directionsCoordMap.insert(pair<EDirection, Coord>(EDirection::Bottom, Coord(1, 0)));
+	directionsCoordMap.insert(pair<EDirection, Coord>(EDirection::Left, Coord(0, -1)));
+	directionsCoordMap.insert(pair<EDirection, Coord>(EDirection::Up, Coord(-1, 0)));
+
+	currentDir = EDirection::Left;
 }
 
 void LevelManager::Start()
@@ -75,6 +87,7 @@ void LevelManager::RenderBoard()
 	}
 }
 
+// Snake class
 void LevelManager::CreateSnake()
 {
 	_snake.clear();
@@ -123,14 +136,22 @@ void LevelManager::SpawnCollectible()
 	_renderer->DrawChar(randomX, randomY, asciiChar, foregroundColor);
 }
 
+// Snake class
 void LevelManager::CleanLastTile(int pLastIndex)
 {
 	_renderer->ClearChar(_snake[pLastIndex].x, _snake[pLastIndex].y);
 }
 
-int LevelManager::MoveSnake(int pDirX, int pDirY)
+// Snake class
+void LevelManager::UpdateDirection(EDirection pDirection)
 {
-	if (CheckCollisions(pDirX, pDirY) == INCORRECT_MOVE)
+	currentDir = pDirection;
+}
+
+// Snake class
+int LevelManager::MoveSnake()
+{
+	if (CheckCollisions() == INCORRECT_MOVE)
 	{
 		return INCORRECT_MOVE;
 	}
@@ -145,16 +166,16 @@ int LevelManager::MoveSnake(int pDirX, int pDirY)
 		_snake[tileIndex].y = _snake[tileIndex - 1].y;
 	}
 
-	_snake[0].x += pDirX;
-	_snake[0].y += pDirY;
+	_snake[0].x += directionsCoordMap.at(currentDir).x;
+	_snake[0].y += directionsCoordMap.at(currentDir).y;
 
 	return CORRECT_MOVE;
 }
 
-int LevelManager::CheckCollisions(int pDirX, int pDirY)
+int LevelManager::CheckCollisions()
 {
-	int newX = _snake[0].x + pDirX;
-	int newY = _snake[0].y + pDirY;
+	int newX = _snake[0].x + directionsCoordMap.at(currentDir).x;
+	int newY = _snake[0].y + directionsCoordMap.at(currentDir).y;
 	ETile newTile = _board[newX][newY];
 
 	if (newTile == ETile::Collectible)
@@ -199,8 +220,9 @@ void LevelManager::TileToChar(ETile& pTile, char& pAsciiChar, EColor& pForegroun
 	}
 }
 
-void LevelManager::EnlargeSnake() {
-
+// Snake class
+void LevelManager::EnlargeSnake()
+{
 	SnakePiece lastSnakePiece = _snake.back();
 
 	_snake.push_back(SnakePiece(lastSnakePiece.x , lastSnakePiece.y + 1, lastSnakePiece.pieceType));

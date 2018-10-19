@@ -3,6 +3,14 @@
 
 #pragma once
 
+enum EDirection
+{
+	Right,
+	Bottom,
+	Left,
+	Up
+};
+
 enum EGameState
 {
 	Play,
