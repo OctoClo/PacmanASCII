@@ -27,12 +27,12 @@ void LevelManager::Init(Renderer* pRenderer)
 
 void LevelManager::InitDirectionCoordMap()
 {
-	directionsCoordMap.insert(pair<EDirection, Coord>(EDirection::Right, Coord(0, 1)));
-	directionsCoordMap.insert(pair<EDirection, Coord>(EDirection::Bottom, Coord(1, 0)));
-	directionsCoordMap.insert(pair<EDirection, Coord>(EDirection::Left, Coord(0, -1)));
-	directionsCoordMap.insert(pair<EDirection, Coord>(EDirection::Up, Coord(-1, 0)));
+	_directionsCoordMap.insert(pair<EDirection, Coord>(EDirection::Right, Coord(0, 1)));
+	_directionsCoordMap.insert(pair<EDirection, Coord>(EDirection::Bottom, Coord(1, 0)));
+	_directionsCoordMap.insert(pair<EDirection, Coord>(EDirection::Left, Coord(0, -1)));
+	_directionsCoordMap.insert(pair<EDirection, Coord>(EDirection::Up, Coord(-1, 0)));
 
-	currentDir = EDirection::Left;
+	_currentDir = EDirection::Left;
 }
 
 void LevelManager::Start()
@@ -160,9 +160,9 @@ void LevelManager::UpdateDirection(EDirection pDirection)
 {
 	// Check if new direction is not opposed to current direction
 	// (left -> right, up -> bottom...)
-	if (pDirection != ((currentDir + 2) % 4))
+	if (pDirection != ((_currentDir + 2) % 4))
 	{
-		currentDir = pDirection;
+		_currentDir = pDirection;
 	}
 }
 
@@ -184,16 +184,16 @@ int LevelManager::MoveSnake()
 		_snake[tileIndex].y = _snake[tileIndex - 1].y;
 	}
 
-	_snake[0].x += directionsCoordMap.at(currentDir).x;
-	_snake[0].y += directionsCoordMap.at(currentDir).y;
+	_snake[0].x += _directionsCoordMap.at(_currentDir).x;
+	_snake[0].y += _directionsCoordMap.at(_currentDir).y;
 
 	return CORRECT_MOVE;
 }
 
 int LevelManager::CheckCollisions()
 {
-	int newX = _snake[0].x + directionsCoordMap.at(currentDir).x;
-	int newY = _snake[0].y + directionsCoordMap.at(currentDir).y;
+	int newX = _snake[0].x + _directionsCoordMap.at(_currentDir).x;
+	int newY = _snake[0].y + _directionsCoordMap.at(_currentDir).y;
 	ETile newTile = _board[newX][newY];
 
 	if (newTile == ETile::Collectible)

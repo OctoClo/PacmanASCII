@@ -2,16 +2,16 @@
 #include "stdafx.h"
 #include "Timer.h"
 
-clock_t Timer::startTime = 0;
+clock_t Timer::_startTime = 0;
 
 void Timer::Start()
 {
-	Timer::startTime = clock();
+	Timer::_startTime = clock();
 }
 
 bool Timer::CanMove()
 {
-	if ((clock() - Timer::startTime) >= MOVE_INTERVAL_MILLIS)
+	if ((clock() - Timer::_startTime) >= MOVE_INTERVAL_MILLIS)
 	{
 		Timer::Start();
 		return true;

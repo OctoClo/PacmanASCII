@@ -72,8 +72,8 @@ private:
 	int _score;
 	ETile _board[SCREEN_HEIGHT][SCREEN_WIDTH];
 
-	EDirection currentDir;
-	map<EDirection, Coord> directionsCoordMap;
+	EDirection _currentDir;
+	map<EDirection, Coord> _directionsCoordMap;
 
 	vector<SnakePiece> _snake;
 

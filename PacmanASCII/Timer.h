@@ -12,5 +12,5 @@ public:
 	static bool CanMove();
 
 private:
-	static clock_t startTime;
+	static clock_t _startTime;
 };
