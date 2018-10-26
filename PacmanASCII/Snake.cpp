@@ -28,7 +28,7 @@ void Snake::UpdateRenderer()
 	{
 		pieceType = it->pieceType;
 		TileToChar(pieceType, asciiChar, foregroundColor);
-		_renderer->DrawChar(it->x, it->y, asciiChar, foregroundColor);
+		_renderer->DrawChar(it->coord.x, it->coord.y, asciiChar, foregroundColor);
 	}
 }
 
@@ -55,12 +55,12 @@ int Snake::MoveSnake()
 
 	for (int tileIndex = lastTileIndex; tileIndex > 0; tileIndex--)
 	{
-		_snake[tileIndex].x = _snake[tileIndex - 1].x;
-		_snake[tileIndex].y = _snake[tileIndex - 1].y;
+		_snake[tileIndex].coord.x = _snake[tileIndex - 1].coord.x;
+		_snake[tileIndex].coord.y = _snake[tileIndex - 1].coord.y;
 	}
 
-	_snake[0].x += _directionsCoordMap.at(_currentDir).x;
-	_snake[0].y += _directionsCoordMap.at(_currentDir).y;
+	_snake[0].coord.x += _directionsCoordMap.at(_currentDir).x;
+	_snake[0].coord.y += _directionsCoordMap.at(_currentDir).y;
 
 	return CORRECT_MOVE;
 }
@@ -69,7 +69,7 @@ void Snake::EnlargeSnake()
 {
 	SnakePiece lastSnakePiece = _snake.back();
 
-	_snake.push_back(SnakePiece(lastSnakePiece.x, lastSnakePiece.y + 1, lastSnakePiece.pieceType));
+	_snake.push_back(SnakePiece(lastSnakePiece.coord.x, lastSnakePiece.coord.y + 1, lastSnakePiece.pieceType));
 }
 
 void Snake::InitDirectionCoordMap()
@@ -96,8 +96,8 @@ void Snake::CreateSnake()
 
 int Snake::CheckCollisions()
 {
-	int newX = _snake[0].x + _directionsCoordMap.at(_currentDir).x;
-	int newY = _snake[0].y + _directionsCoordMap.at(_currentDir).y;
+	int newX = _snake[0].coord.x + _directionsCoordMap.at(_currentDir).x;
+	int newY = _snake[0].coord.y + _directionsCoordMap.at(_currentDir).y;
 	ETile newTile = LevelManager::GetInstance()->GetTileFromBoard(newX, newY);
 
 	if (newTile == ETile::Collectible)
@@ -115,7 +115,7 @@ int Snake::CheckCollisions()
 
 void Snake::CleanLastTile(int pLastIndex)
 {
-	_renderer->ClearChar(_snake[pLastIndex].x, _snake[pLastIndex].y);
+	_renderer->ClearChar(_snake[pLastIndex].coord.x, _snake[pLastIndex].coord.y);
 }
 
 void Snake::TileToChar(ETile& pTile, char& pAsciiChar, EColor& pForeground)

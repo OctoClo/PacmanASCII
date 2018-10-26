@@ -13,14 +13,12 @@ struct Coord
 
 struct SnakePiece
 {
-	// Coord
-	int x, y;
+	Coord coord;
 	ETile pieceType;
 
 	SnakePiece(int pX = 0, int pY = 0, ETile pPieceType = ETile::SnakeBody)
 	{
-		x = pX;
-		y = pY;
+		coord = Coord(pX, pY);
 		pieceType = pPieceType;
 	}
 };
