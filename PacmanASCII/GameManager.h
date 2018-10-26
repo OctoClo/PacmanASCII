@@ -18,6 +18,7 @@
 #include "stdafx.h"
 #include "Enums.h"
 #include "Renderer.h"
+#include "Snake.h"
 #include "LevelManager.h"
 #include "MenuManager.h"
 #include "UiManager.h"
@@ -40,6 +41,7 @@ private:
 
 	EGameState _gameState;
 
+	Snake* _snake;
 	LevelManager* _levelManager;
 	MenuManager* _menuManager;
 	Renderer* _renderer;

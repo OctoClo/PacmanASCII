@@ -25,7 +25,9 @@ void GameManager::GameLoop()
 
 		if (_gameState == EGameState::Play && Timer::CanMove())
 		{
-			if (_levelManager->MoveSnake() != CORRECT_MOVE)
+			int gameOver = (_snake->MoveSnake() != CORRECT_MOVE);
+			
+			if (gameOver)
 			{
 				_gameState = EGameState::Menu;
 				_menuManager->LaunchEndMenu();
@@ -43,6 +45,9 @@ void GameManager::Init()
 	_renderer = Renderer::GetInstance();
 	_renderer->Init();
 
+	_snake = new Snake();
+	_snake->Init(_renderer);
+
 	_levelManager = LevelManager::GetInstance();
 	_levelManager->Init(_renderer);
 
@@ -55,6 +60,7 @@ void GameManager::Init()
 void GameManager::Start()
 {
 	_levelManager->Start();
+	_snake->Start();
 
 	_gameState = EGameState::Play;
 }
@@ -100,14 +106,14 @@ void GameManager::ProcessInputs()
 			}
 			else if (_gameState == EGameState::Play)
 			{
-				_levelManager->UpdateDirection(EDirection::Up);
+				_snake->UpdateDirection(EDirection::Up);
 			}
 			break;
 
 		case KEY_Q: case KEY_Q_CAPITAL:
 			if (_gameState == EGameState::Play)
 			{
-				_levelManager->UpdateDirection(EDirection::Left);
+				_snake->UpdateDirection(EDirection::Left);
 			}
 			break;
 
@@ -119,14 +125,14 @@ void GameManager::ProcessInputs()
 			}
 			else if (_gameState == EGameState::Play)
 			{
-				_levelManager->UpdateDirection(EDirection::Bottom);
+				_snake->UpdateDirection(EDirection::Bottom);
 			}
 			break;
 
 		case KEY_D: case KEY_D_CAPITAL:
 			if (_gameState == EGameState::Play)
 			{
-				_levelManager->UpdateDirection(EDirection::Right);
+				_snake->UpdateDirection(EDirection::Right);
 			}
 			break;
 		}
@@ -142,7 +148,7 @@ void GameManager::UpdateRenderer()
 		break;
 
 	case EGameState::Play:
-		_levelManager->UpdateRenderer();
+		_snake->UpdateRenderer();
 		break;
 	}
 }

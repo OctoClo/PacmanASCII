@@ -150,7 +150,9 @@
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="LevelManager.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="Snake.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Structs.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="MenuManager.h" />
     <ClInclude Include="Enums.h" />
@@ -162,6 +164,7 @@
     <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="Snake.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
