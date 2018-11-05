@@ -30,5 +30,6 @@ void UiManager::DrawUi()
 	_renderer->DrawString(STRING_SCORE_X, STRING_SCORE_Y, STRING_SCORE, EColor::White);
 	_renderer->DrawString(STRING_SCORE_COUNTER_X, STRING_SCORE_COUNTER_Y, to_string(_score), EColor::White);
 	
+	_renderer->DrawString(STRING_COMMANDS_X, STRING_COMMANDS_Y, STRING_COMMANDS, EColor::White);
 	_renderer->DrawString(STRING_INFO_X, STRING_INFO_Y, STRING_INFO, EColor::White);
 }

@@ -2,14 +2,18 @@
 
 #define STRING_SCORE "SCORE: "
 #define STRING_SCORE_X 0
-#define STRING_SCORE_Y 40
+#define STRING_SCORE_Y 45
 
 #define STRING_SCORE_COUNTER_X 0
-#define STRING_SCORE_COUNTER_Y 47
+#define STRING_SCORE_COUNTER_Y 52
 
 #define STRING_INFO "Press ESC to quit"
 #define STRING_INFO_X 24
-#define STRING_INFO_Y 80
+#define STRING_INFO_Y 82
+
+#define STRING_COMMANDS "Move with ZQSD"
+#define STRING_COMMANDS_X 24
+#define STRING_COMMANDS_Y 2
 
 #include "stdafx.h"
 #include "Enums.h"
