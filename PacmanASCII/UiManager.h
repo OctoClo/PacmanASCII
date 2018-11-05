@@ -11,7 +11,7 @@
 #define STRING_INFO_X 24
 #define STRING_INFO_Y 82
 
-#define STRING_COMMANDS "Move with ZQSD"
+#define STRING_COMMANDS "Move with ZQSD or with arrows"
 #define STRING_COMMANDS_X 24
 #define STRING_COMMANDS_Y 2
 

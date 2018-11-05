@@ -75,66 +75,30 @@ void GameManager::ProcessInputs()
 		{
 			_gameState = EGameState::Exit;
 		}
-
-		switch (key)
+		else
 		{
-		case KEY_ENTER:
-			if (_gameState == EGameState::Menu)
+			switch (key)
 			{
-				switch (_menuManager->GetCurrentButton())
-				{
-				case EButton::Start: case EButton::Restart:
-					_renderer->ClearScreen();
-					Start();
-					break;
+			case KEY_ENTER:
+				ProcessEnterInput();
+				break;
 
-				case EButton::Quit:
-					_gameState = EGameState::Exit;
-					break;
-				}
-			}
-			break;
+			case KEY_UP: case KEY_Z: case KEY_Z_CAPITAL:
+				ProcessUpInput();
+				break;
 
-		case KEY_Z: case KEY_Z_CAPITAL:
-			if (_gameState == EGameState::Menu &&
-				(_menuManager->GetCurrentButton() == EButton::Quit ||
-				_menuManager->GetCurrentMenu() == EMenuType::Begin))
-			{
-				_menuManager->SetCurrentButton(
-					(_menuManager->GetCurrentMenu() == EMenuType::Begin) ?
-					EButton::Start : EButton::Restart);
-			}
-			else if (_gameState == EGameState::Play)
-			{
-				_snake->UpdateDirection(EDirection::Up);
-			}
-			break;
+			case KEY_LEFT: case KEY_Q: case KEY_Q_CAPITAL:
+				ProcessLeftInput();
+				break;
 
-		case KEY_Q: case KEY_Q_CAPITAL:
-			if (_gameState == EGameState::Play)
-			{
-				_snake->UpdateDirection(EDirection::Left);
-			}
-			break;
+			case KEY_DOWN: case KEY_S: case KEY_S_CAPITAL:
+				ProcessDownInput();
+				break;
 
-		case KEY_S: case KEY_S_CAPITAL:
-			if (_gameState == EGameState::Menu &&
-				_menuManager->GetCurrentButton() != EButton::Quit)
-			{
-				_menuManager->SetCurrentButton(EButton::Quit);
+			case KEY_RIGHT: case KEY_D: case KEY_D_CAPITAL:
+				ProcessRightInput();
+				break;
 			}
-			else if (_gameState == EGameState::Play)
-			{
-				_snake->UpdateDirection(EDirection::Bottom);
-			}
-			break;
-
-		case KEY_D: case KEY_D_CAPITAL:
-			if (_gameState == EGameState::Play)
-			{
-				_snake->UpdateDirection(EDirection::Right);
-			}
-			break;
 		}
 	}
 }
@@ -156,4 +120,67 @@ void GameManager::UpdateRenderer()
 void GameManager::Render()
 {
 	_renderer->Render();
+}
+
+void GameManager::ProcessEnterInput()
+{
+	if (_gameState == EGameState::Menu)
+	{
+		switch (_menuManager->GetCurrentButton())
+		{
+		case EButton::Start: case EButton::Restart:
+			_renderer->ClearScreen();
+			Start();
+			break;
+
+		case EButton::Quit:
+			_gameState = EGameState::Exit;
+			break;
+		}
+	}
+}
+
+void GameManager::ProcessUpInput()
+{
+	if (_gameState == EGameState::Menu &&
+		(_menuManager->GetCurrentButton() == EButton::Quit ||
+			_menuManager->GetCurrentMenu() == EMenuType::Begin))
+	{
+		_menuManager->SetCurrentButton(
+			(_menuManager->GetCurrentMenu() == EMenuType::Begin) ?
+			EButton::Start : EButton::Restart);
+	}
+	else if (_gameState == EGameState::Play)
+	{
+		_snake->UpdateDirection(EDirection::Up);
+	}
+}
+
+void GameManager::ProcessLeftInput()
+{
+	if (_gameState == EGameState::Play)
+	{
+		_snake->UpdateDirection(EDirection::Left);
+	}
+}
+
+void GameManager::ProcessDownInput()
+{
+	if (_gameState == EGameState::Menu &&
+		_menuManager->GetCurrentButton() != EButton::Quit)
+	{
+		_menuManager->SetCurrentButton(EButton::Quit);
+	}
+	else if (_gameState == EGameState::Play)
+	{
+		_snake->UpdateDirection(EDirection::Bottom);
+	}
+}
+
+void GameManager::ProcessRightInput()
+{
+	if (_gameState == EGameState::Play)
+	{
+		_snake->UpdateDirection(EDirection::Right);
+	}
 }
