@@ -1,4 +1,4 @@
-﻿// stdafx.h : fichier Include pour les fichiers Include système standard,
+// stdafx.h : fichier Include pour les fichiers Include système standard,
 // ou les fichiers Include spécifiques aux projets qui sont utilisés fréquemment,
 // et sont rarement modifiés
 //
@@ -23,6 +23,7 @@
 #include <vector>
 #include <ctime>
 #include <cstdlib>
+#include <random>
 
 using namespace std;
 

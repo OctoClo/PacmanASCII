@@ -21,6 +21,8 @@ void LevelManager::Init(Renderer* pRenderer)
 
 	_uiManager = UiManager::GetInstance();
 	_uiManager->Init(_renderer);
+
+	srand((int)time(0));
 }
 
 void LevelManager::Start()
