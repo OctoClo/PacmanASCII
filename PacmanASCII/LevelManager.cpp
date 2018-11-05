@@ -76,6 +76,7 @@ void LevelManager::FillBoard()
 
 	if (!_firstGame)
 	{
+		// Reinitialize collectible position to nothing if new game
 		_board[_collectibleCoord.x][_collectibleCoord.y] = ETile::Nothing;
 	}
 }

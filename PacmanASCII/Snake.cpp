@@ -20,7 +20,6 @@ void Snake::UpdateRenderer()
 	char asciiChar;
 	EColor foregroundColor;
 
-	// Why not
 	vector<SnakePiece>::iterator it;
 	vector<SnakePiece>::iterator end = _snake.end();
 
@@ -34,8 +33,8 @@ void Snake::UpdateRenderer()
 
 void Snake::UpdateDirection(EDirection pDirection)
 {
-	// Check if new direction is not opposed to current direction
-	// (left -> right, up -> bottom...)
+	// Update only if new direction is not opposed to current direction
+	// (left -> right, up -> bottom... = forbidden)
 	if (pDirection != ((_currentDir + 2) % 4))
 	{
 		_currentDir = pDirection;
@@ -44,21 +43,24 @@ void Snake::UpdateDirection(EDirection pDirection)
 
 int Snake::MoveSnake()
 {
+	// Check collisions before moving
 	if (CheckCollisions() == INCORRECT_MOVE)
 	{
 		return INCORRECT_MOVE;
 	}
 
+	// Clear last snake tile
 	int lastTileIndex = _snake.size() - 1;
-
 	CleanLastTile(lastTileIndex);
 
+	// Move all snake body
 	for (int tileIndex = lastTileIndex; tileIndex > 0; tileIndex--)
 	{
 		_snake[tileIndex].coord.x = _snake[tileIndex - 1].coord.x;
 		_snake[tileIndex].coord.y = _snake[tileIndex - 1].coord.y;
 	}
 
+	// Move snake head according to direction
 	_snake[0].coord.x += _directionsCoordMap.at(_currentDir).x;
 	_snake[0].coord.y += _directionsCoordMap.at(_currentDir).y;
 
@@ -68,7 +70,6 @@ int Snake::MoveSnake()
 void Snake::EnlargeSnake()
 {
 	SnakePiece lastSnakePiece = _snake.back();
-
 	_snake.push_back(SnakePiece(lastSnakePiece.coord.x, lastSnakePiece.coord.y + 1, lastSnakePiece.pieceType));
 }
 

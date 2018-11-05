@@ -1,4 +1,3 @@
-
 #include "stdafx.h"
 #include "GameManager.h"
 
@@ -23,8 +22,10 @@ void GameManager::GameLoop()
 		ProcessInputs();
 		UpdateRenderer();
 
+		// Move snake only if we're playing and timer says so
 		if (_gameState == EGameState::Play && Timer::CanMove())
 		{
+			// Game over happens if snake does an incorrect move
 			int gameOver = (_snake->MoveSnake() != CORRECT_MOVE);
 			
 			if (gameOver)
@@ -142,13 +143,16 @@ void GameManager::ProcessEnterInput()
 
 void GameManager::ProcessUpInput()
 {
+	// If we're in menu and current button is Quit
 	if (_gameState == EGameState::Menu &&
-		(_menuManager->GetCurrentButton() == EButton::Quit ||
-			_menuManager->GetCurrentMenu() == EMenuType::Begin))
+		_menuManager->GetCurrentButton() == EButton::Quit)
 	{
+		// If current menu is Begin menu -> go to Start button
+		// Else if current menu is End menu -> go to Restart button
 		_menuManager->SetCurrentButton(
 			(_menuManager->GetCurrentMenu() == EMenuType::Begin) ?
-			EButton::Start : EButton::Restart);
+			EButton::Start :
+			EButton::Restart);
 	}
 	else if (_gameState == EGameState::Play)
 	{
@@ -166,9 +170,11 @@ void GameManager::ProcessLeftInput()
 
 void GameManager::ProcessDownInput()
 {
+	// If we're in menu and current button is not Quit (meaning Start or Restart)
 	if (_gameState == EGameState::Menu &&
 		_menuManager->GetCurrentButton() != EButton::Quit)
 	{
+		// Go to Quit button
 		_menuManager->SetCurrentButton(EButton::Quit);
 	}
 	else if (_gameState == EGameState::Play)

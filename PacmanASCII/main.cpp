@@ -1,12 +1,9 @@
-﻿// PacmanASCII.cpp : définit le point d'entrée pour l'application console.
-//
+﻿#define WIN32_LEAN_AND_MEAN
 
 #include "stdafx.h"
 #include "Enums.h"
 #include "GameManager.h"
 #include "Renderer.h"
-
-#define WIN32_LEAN_AND_MEAN
 
 int main()
 {

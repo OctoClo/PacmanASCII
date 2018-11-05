@@ -11,6 +11,7 @@ void Timer::Start()
 
 bool Timer::CanMove()
 {
+	// If time is over given interval, time to move !
 	if ((clock() - Timer::_startTime) >= MOVE_INTERVAL_MILLIS)
 	{
 		Timer::Start();
