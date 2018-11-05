@@ -103,8 +103,8 @@ void LevelManager::UpdateRendererOnce()
 
 void LevelManager::SpawnCollectible()
 {
-	int randomX = rand() % SCREEN_HEIGHT;
-	int randomY = rand() % SCREEN_WIDTH;
+	int randomX = Utils::Clamp(rand() % SCREEN_HEIGHT, 2, SCREEN_HEIGHT - 3);
+	int randomY = Utils::Clamp(rand() % SCREEN_WIDTH, 1, SCREEN_WIDTH - 2);
 
 	_board[randomX][randomY] = ETile::Collectible;
 

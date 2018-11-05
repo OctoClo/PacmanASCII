@@ -11,6 +11,7 @@
 #include "Structs.h"
 #include "Renderer.h"
 #include "UiManager.h"
+#include "Utils.h"
 
 class LevelManager
 {
