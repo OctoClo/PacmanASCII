@@ -4,6 +4,7 @@
 
 clock_t Timer::_startTime = 0;
 
+//Get the current hour of the computer
 void Timer::Start()
 {
 	Timer::_startTime = clock();

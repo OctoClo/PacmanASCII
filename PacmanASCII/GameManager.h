@@ -40,7 +40,7 @@ private:
 	void Start();
 
 	void ProcessInputs();
-	void UpdateRenderer();
+	void UpdateBuffer();
 	void Render();
 
 	void ProcessEnterInput();

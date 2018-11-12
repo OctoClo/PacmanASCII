@@ -1,6 +1,7 @@
 
 #include "stdafx.h"
 #include "Snake.h"
+#include "Utils.h"
 
 void Snake::Init(Renderer* pRenderer)
 {
@@ -14,7 +15,7 @@ void Snake::Start()
 	CreateSnake();
 }
 
-void Snake::UpdateRenderer()
+void Snake::UpdateBuffer()
 {
 	ETile pieceType;
 	char asciiChar;
@@ -26,7 +27,7 @@ void Snake::UpdateRenderer()
 	for (it = _snake.begin(); it != end; it++)
 	{
 		pieceType = it->pieceType;
-		TileToChar(pieceType, asciiChar, foregroundColor);
+		Utils::TileToChar(pieceType, asciiChar, foregroundColor);
 		_renderer->DrawChar(it->coord.x, it->coord.y, asciiChar, foregroundColor);
 	}
 }
@@ -53,7 +54,8 @@ int Snake::MoveSnake()
 	int lastTileIndex = _snake.size() - 1;
 	CleanLastTile(lastTileIndex);
 
-	// Move all snake body
+	// Move all the snake body
+	//As the next tile takes the coordinates of the previous one, we should think backward
 	for (int tileIndex = lastTileIndex; tileIndex > 0; tileIndex--)
 	{
 		_snake[tileIndex].coord.x = _snake[tileIndex - 1].coord.x;
@@ -73,6 +75,8 @@ void Snake::EnlargeSnake()
 	_snake.push_back(SnakePiece(lastSnakePiece.coord.x, lastSnakePiece.coord.y + 1, lastSnakePiece.pieceType));
 }
 
+//Create a map with directions and coordinates
+//Avoid making "switch case" or "if" each time we need to move the snake
 void Snake::InitDirectionCoordMap()
 {
 	_directionsCoordMap.insert(pair<EDirection, Coord>(EDirection::Right, Coord(0, 1)));
@@ -83,6 +87,7 @@ void Snake::InitDirectionCoordMap()
 	_currentDir = EDirection::Left;
 }
 
+//Create the original snake with original pieces of the body
 void Snake::CreateSnake()
 {
 	_snake.clear();
@@ -119,19 +124,4 @@ void Snake::CleanLastTile(int pLastIndex)
 	_renderer->ClearChar(_snake[pLastIndex].coord.x, _snake[pLastIndex].coord.y);
 }
 
-void Snake::TileToChar(ETile& pTile, char& pAsciiChar, EColor& pForeground)
-{
-	switch (pTile)
-	{
-	case ETile::SnakeHead:
-		pAsciiChar = CHAR_SNAKE_HEAD;
-		pForeground = EColor::LightYellow;
-		break;
-
-	case ETile::SnakeBody:
-		pAsciiChar = CHAR_SNAKE_BODY;
-		pForeground = EColor::Yellow;
-		break;
-	}
-}
 

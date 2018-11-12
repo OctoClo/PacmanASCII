@@ -33,7 +33,7 @@ void MenuManager::LaunchEndMenu()
 	_currentButton = EButton::Restart;
 }
 
-void MenuManager::UpdateRenderer()
+void MenuManager::UpdateBuffer()
 {
 	DisplayMenu();
 

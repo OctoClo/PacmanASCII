@@ -3,9 +3,6 @@
 #define START_SCORE 0
 #define SCORE_INCREMENT 100
 
-#define CHAR_WALL '#'
-#define CHAR_COLLECTIBLE '¤'
-
 #include "stdafx.h"
 #include "Enums.h"
 #include "Structs.h"
@@ -26,9 +23,8 @@ public:
 
 private:
 	void FillBoard();
-	void UpdateRendererOnce();
+	void UpdateBuffer();
 	void SpawnCollectible();
-	void TileToChar(ETile& pTile, char& pAsciiChar, EColor& pForeground);
 
 	int _score;
 	ETile _board[SCREEN_HEIGHT][SCREEN_WIDTH];

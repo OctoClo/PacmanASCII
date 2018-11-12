@@ -4,9 +4,6 @@
 #define START_SNAKE_HEAD_Y 80
 #define START_SNAKE_SIZE 3
 
-#define CHAR_SNAKE_HEAD '@'
-#define CHAR_SNAKE_BODY 'o'
-
 #define INCORRECT_MOVE 0
 #define CORRECT_MOVE 1
 
@@ -22,7 +19,7 @@ public:
 	void Init(Renderer* pRenderer);
 	void Start();
 
-	void UpdateRenderer();
+	void UpdateBuffer();
 	void UpdateDirection(EDirection pDirection);
 
 	int MoveSnake();

@@ -32,7 +32,7 @@ void LevelManager::Start()
 
 	FillBoard();
 	SpawnCollectible();
-	UpdateRendererOnce();
+	UpdateBuffer();
 
 	if (_firstGame)
 	{
@@ -40,6 +40,7 @@ void LevelManager::Start()
 	}
 }
 
+//At each level, update the position of the collectible
 void LevelManager::UpdateCollectible(int pEatenCollectibleX, int pEatenCollectibleY)
 {
 	_score += SCORE_INCREMENT;
@@ -53,6 +54,7 @@ ETile LevelManager::GetTileFromBoard(int pX, int pY)
 	return _board[pX][pY];
 }
 
+//Fill the game board with the walls of the level
 void LevelManager::FillBoard()
 {
 	int startX = 1;
@@ -76,12 +78,12 @@ void LevelManager::FillBoard()
 
 	if (!_firstGame)
 	{
-		// Reinitialize collectible position to nothing if new game
+		// Reinitialize collectible's position to nothing if new game
 		_board[_collectibleCoord.x][_collectibleCoord.y] = ETile::Nothing;
 	}
 }
 
-void LevelManager::UpdateRendererOnce()
+void LevelManager::UpdateBuffer()
 {
 	ETile tile;
 	char asciiChar;
@@ -94,7 +96,7 @@ void LevelManager::UpdateRendererOnce()
 			tile = _board[x][y];
 			if (tile != ETile::Nothing)
 			{
-				TileToChar(tile, asciiChar, foregroundColor);
+				Utils::TileToChar(tile, asciiChar, foregroundColor);
 				_renderer->DrawChar(x, y, asciiChar, foregroundColor);
 			}
 		}
@@ -103,6 +105,7 @@ void LevelManager::UpdateRendererOnce()
 
 void LevelManager::SpawnCollectible()
 {
+	//Avoid the collectible to spawn in the walls
 	int randomX = Utils::Clamp(rand() % SCREEN_HEIGHT, 2, SCREEN_HEIGHT - 3);
 	int randomY = Utils::Clamp(rand() % SCREEN_WIDTH, 1, SCREEN_WIDTH - 2);
 
@@ -111,24 +114,10 @@ void LevelManager::SpawnCollectible()
 	ETile tile = ETile::Collectible;
 	char asciiChar;
 	EColor foregroundColor;
-	TileToChar(tile, asciiChar, foregroundColor);
+	Utils::TileToChar(tile, asciiChar, foregroundColor);
 	_renderer->DrawChar(randomX, randomY, asciiChar, foregroundColor);
 
 	_collectibleCoord = Coord(randomX, randomY);
 }
 
-void LevelManager::TileToChar(ETile& pTile, char& pAsciiChar, EColor& pForeground)
-{
-	switch (pTile)
-	{
-	case ETile::Wall:
-		pAsciiChar = CHAR_WALL;
-		pForeground = EColor::Cyan;
-		break;
 
-	case ETile::Collectible:
-		pAsciiChar = CHAR_COLLECTIBLE;
-		pForeground = EColor::LightGreen;
-		break;
-	}
-}

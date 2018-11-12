@@ -24,7 +24,7 @@ public:
 	void LaunchBeginMenu();
 	void LaunchEndMenu();
 
-	void UpdateRenderer();
+	void UpdateBuffer();
 
 	EMenuType GetCurrentMenu() { return _currentMenu; }
 	void SetCurrentButton(EButton pButton) { _currentButton = pButton; }
