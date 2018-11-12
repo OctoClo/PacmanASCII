@@ -19,7 +19,7 @@ public:
 	void Init(Renderer* pRenderer);
 	void Start();
 
-	void UpdateCollectible(int pEatenCollectibleX, int pEatenCollectibleY);
+	void UpdateCollectible(int pEatenCollectibleX, int pEatenCollectibleY, vector<SnakePiece> pSnake);
 	ETile GetTileFromBoard(int pX, int pY);
 
 	static LevelManager* GetInstance();
@@ -27,7 +27,9 @@ public:
 private:
 	void FillBoard();
 	void UpdateRendererOnce();
-	void SpawnCollectible();
+	void SpawnCollectible(vector<SnakePiece> pSnake = vector<SnakePiece>());
+	bool IsPositionInSnake(int pX, int pY, vector<SnakePiece> pSnake);
+	
 	void TileToChar(ETile& pTile, char& pAsciiChar, EColor& pForeground);
 
 	int _score;
