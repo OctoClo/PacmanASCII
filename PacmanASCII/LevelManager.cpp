@@ -40,12 +40,11 @@ void LevelManager::Start()
 	}
 }
 
-//At each level, update the position of the collectible
-void LevelManager::UpdateCollectible(int pEatenCollectibleX, int pEatenCollectibleY)
+void LevelManager::UpdateCollectible(int pEatenCollectibleX, int pEatenCollectibleY, vector<SnakePiece> pSnake)
 {
 	_score += SCORE_INCREMENT;
 	_uiManager->SetScore(_score);
-	SpawnCollectible();
+	SpawnCollectible(pSnake);
 	_board[pEatenCollectibleX][pEatenCollectibleY] = ETile::Nothing;
 }
 
@@ -103,12 +102,17 @@ void LevelManager::UpdateBuffer()
 	}
 }
 
-void LevelManager::SpawnCollectible()
+void LevelManager::SpawnCollectible(vector<SnakePiece> pSnake)
 {
+	int randomX, randomY;
 	//Avoid the collectible to spawn in the walls
-	int randomX = Utils::Clamp(rand() % SCREEN_HEIGHT, 2, SCREEN_HEIGHT - 3);
-	int randomY = Utils::Clamp(rand() % SCREEN_WIDTH, 1, SCREEN_WIDTH - 2);
 
+	do
+	{
+		randomX = Utils::Clamp(rand() % SCREEN_HEIGHT, 2, SCREEN_HEIGHT - 3);
+		randomY = Utils::Clamp(rand() % SCREEN_WIDTH, 1, SCREEN_WIDTH - 2);
+	} while (IsPositionInSnake(randomX, randomY, pSnake));
+	
 	_board[randomX][randomY] = ETile::Collectible;
 
 	ETile tile = ETile::Collectible;
@@ -120,4 +124,20 @@ void LevelManager::SpawnCollectible()
 	_collectibleCoord = Coord(randomX, randomY);
 }
 
+bool LevelManager::IsPositionInSnake(int pX, int pY, vector<SnakePiece> pSnake)
+{
+	if (pSnake.size() > 0)
+	{
+		vector<SnakePiece>::iterator it;
+		vector<SnakePiece>::iterator end = pSnake.end();
+
+		for (it = pSnake.begin(); it != end; it++)
+		{
+			if (it->coord.x == pX && it->coord.y == pY)
+				return true;
+		}
+	}
+
+	return false;
+}
 

@@ -108,8 +108,8 @@ int Snake::CheckCollisions()
 
 	if (newTile == ETile::Collectible)
 	{
-		LevelManager::GetInstance()->UpdateCollectible(newX, newY);
 		EnlargeSnake();
+		LevelManager::GetInstance()->UpdateCollectible(newX, newY, _snake);
 	}
 	else if (newTile == ETile::SnakeBody || newTile == ETile::Wall)
 	{
