@@ -17,6 +17,7 @@ public:
 	void Start();
 
 	void UpdateCollectible(int pEatenCollectibleX, int pEatenCollectibleY, vector<SnakePiece> pSnake);
+	void UpdateBuffer();
 	ETile GetTileFromBoard(int pX, int pY);
 
 	static LevelManager* GetInstance();

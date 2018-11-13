@@ -105,10 +105,10 @@ void LevelManager::UpdateBuffer()
 void LevelManager::SpawnCollectible(vector<SnakePiece> pSnake)
 {
 	int randomX, randomY;
-	//Avoid the collectible to spawn in the walls
 
 	do
 	{
+		//Avoid the collectible to spawn in the walls
 		randomX = Utils::Clamp(rand() % SCREEN_HEIGHT, 2, SCREEN_HEIGHT - 3);
 		randomY = Utils::Clamp(rand() % SCREEN_WIDTH, 1, SCREEN_WIDTH - 2);
 	} while (IsPositionInSnake(randomX, randomY, pSnake));
@@ -124,6 +124,7 @@ void LevelManager::SpawnCollectible(vector<SnakePiece> pSnake)
 	_collectibleCoord = Coord(randomX, randomY);
 }
 
+//Check if a position is in the snake's body, avoid the collectible to spawn inside
 bool LevelManager::IsPositionInSnake(int pX, int pY, vector<SnakePiece> pSnake)
 {
 	if (pSnake.size() > 0)
