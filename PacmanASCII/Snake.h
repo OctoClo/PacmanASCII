@@ -25,12 +25,13 @@ public:
 	int MoveSnake();
 	void EnlargeSnake();
 
+	static Snake* GetInstance();
+
 private:
 	void InitDirectionCoordMap();
 	void CreateSnake();
 	int CheckCollisions();
 	void CleanLastTile(int pLastIndex);
-	void TileToChar(ETile& pTile, char& pAsciiChar, EColor& pForeground);
 
 	EDirection _currentDir;
 	map<EDirection, Coord> _directionsCoordMap;
@@ -38,4 +39,6 @@ private:
 	vector<SnakePiece> _snake;
 
 	Renderer* _renderer;
+
+	static Snake* _instance;
 };

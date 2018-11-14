@@ -3,6 +3,18 @@
 #include "Snake.h"
 #include "Utils.h"
 
+Snake* Snake::_instance = nullptr;
+
+Snake* Snake::GetInstance() 
+{
+	if (!_instance)
+	{
+		_instance = new Snake();
+	}
+
+	return _instance;
+}
+
 void Snake::Init(Renderer* pRenderer)
 {
 	_renderer = pRenderer;

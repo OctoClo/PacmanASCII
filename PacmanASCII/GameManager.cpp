@@ -37,7 +37,7 @@ void GameManager::Init()
 	_renderer = Renderer::GetInstance();
 	_renderer->Init();
 
-	_snake = new Snake();
+	_snake = Snake::GetInstance();
 	_snake->Init(_renderer);
 
 	_levelManager = LevelManager::GetInstance();
