@@ -148,7 +148,6 @@ void GameManager::ProcessEnterInput()
 
 void GameManager::ProcessUpInput()
 {
-	// If we're in menu and current button is Quit
 	if (_gameState == EGameState::Menu &&
 		_menuManager->GetCurrentButton() == EButton::Quit)
 	{

@@ -1,6 +1,7 @@
 
 #include "stdafx.h"
 #include "LevelManager.h"
+#include "Snake.h"
 
 LevelManager* LevelManager::_instance = nullptr;
 
@@ -22,6 +23,9 @@ void LevelManager::Init(Renderer* pRenderer)
 	_uiManager = UiManager::GetInstance();
 	_uiManager->Init(_renderer);
 
+	_snake = Snake::GetInstance();
+
+	//Allows the rand() function below to generate different random values each time we reload the level
 	srand((int)time(0));
 }
 
@@ -40,11 +44,11 @@ void LevelManager::Start()
 	}
 }
 
-void LevelManager::UpdateCollectible(int pEatenCollectibleX, int pEatenCollectibleY, vector<SnakePiece> pSnake)
+void LevelManager::UpdateCollectible(int pEatenCollectibleX, int pEatenCollectibleY)
 {
 	_score += SCORE_INCREMENT;
 	_uiManager->SetScore(_score);
-	SpawnCollectible(pSnake);
+	SpawnCollectible();
 	_board[pEatenCollectibleX][pEatenCollectibleY] = ETile::Nothing;
 }
 
@@ -102,7 +106,7 @@ void LevelManager::UpdateBuffer()
 	}
 }
 
-void LevelManager::SpawnCollectible(vector<SnakePiece> pSnake)
+void LevelManager::SpawnCollectible()
 {
 	int randomX, randomY;
 
@@ -111,7 +115,7 @@ void LevelManager::SpawnCollectible(vector<SnakePiece> pSnake)
 		//Avoid the collectible to spawn in the walls
 		randomX = Utils::Clamp(rand() % SCREEN_HEIGHT, 2, SCREEN_HEIGHT - 3);
 		randomY = Utils::Clamp(rand() % SCREEN_WIDTH, 1, SCREEN_WIDTH - 2);
-	} while (IsPositionInSnake(randomX, randomY, pSnake));
+	} while (_snake->IsPositionInSnake(randomX, randomY));
 	
 	_board[randomX][randomY] = ETile::Collectible;
 
@@ -124,21 +128,4 @@ void LevelManager::SpawnCollectible(vector<SnakePiece> pSnake)
 	_collectibleCoord = Coord(randomX, randomY);
 }
 
-//Check if a position is in the snake's body, avoid the collectible to spawn inside
-bool LevelManager::IsPositionInSnake(int pX, int pY, vector<SnakePiece> pSnake)
-{
-	if (pSnake.size() > 0)
-	{
-		vector<SnakePiece>::iterator it;
-		vector<SnakePiece>::iterator end = pSnake.end();
-
-		for (it = pSnake.begin(); it != end; it++)
-		{
-			if (it->coord.x == pX && it->coord.y == pY)
-				return true;
-		}
-	}
-
-	return false;
-}
 

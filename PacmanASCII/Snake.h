@@ -24,6 +24,7 @@ public:
 
 	int MoveSnake();
 	void EnlargeSnake();
+	bool IsPositionInSnake(int pX, int pY);
 
 	static Snake* GetInstance();
 

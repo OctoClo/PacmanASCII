@@ -112,6 +112,24 @@ void Snake::CreateSnake()
 	}
 }
 
+//Check if a position is in the snake's body, avoid the collectible to spawn inside
+bool Snake::IsPositionInSnake(int pX, int pY)
+{
+	if (_snake.size() > 0)
+	{
+		vector<SnakePiece>::iterator it;
+		vector<SnakePiece>::iterator end = _snake.end();
+
+		for (it = _snake.begin(); it != end; it++)
+		{
+			if (it->coord.x == pX && it->coord.y == pY)
+				return true;
+		}
+	}
+
+	return false;
+}
+
 int Snake::CheckCollisions()
 {
 	int newX = _snake[0].coord.x + _directionsCoordMap.at(_currentDir).x;
@@ -121,7 +139,7 @@ int Snake::CheckCollisions()
 	if (newTile == ETile::Collectible)
 	{
 		EnlargeSnake();
-		LevelManager::GetInstance()->UpdateCollectible(newX, newY, _snake);
+		LevelManager::GetInstance()->UpdateCollectible(newX, newY);
 	}
 	else if (newTile == ETile::SnakeBody || newTile == ETile::Wall)
 	{

@@ -10,13 +10,16 @@
 #include "UiManager.h"
 #include "Utils.h"
 
+//Forward declaration
+class Snake;
+
 class LevelManager
 {
 public:
 	void Init(Renderer* pRenderer);
 	void Start();
 
-	void UpdateCollectible(int pEatenCollectibleX, int pEatenCollectibleY, vector<SnakePiece> pSnake);
+	void UpdateCollectible(int pEatenCollectibleX, int pEatenCollectibleY);
 	void UpdateBuffer();
 	ETile GetTileFromBoard(int pX, int pY);
 
@@ -24,8 +27,7 @@ public:
 
 private:
 	void FillBoard();
-	void SpawnCollectible(vector<SnakePiece> pSnake = vector<SnakePiece>());
-	bool IsPositionInSnake(int pX, int pY, vector<SnakePiece> pSnake);
+	void SpawnCollectible();
 
 	int _score;
 	ETile _board[SCREEN_HEIGHT][SCREEN_WIDTH];
@@ -35,6 +37,7 @@ private:
 
 	UiManager* _uiManager;
 	Renderer* _renderer;
+	Snake* _snake;
 
 	static LevelManager* _instance;
 };
