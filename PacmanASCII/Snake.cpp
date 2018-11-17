@@ -36,11 +36,11 @@ void Snake::UpdateBuffer()
 	vector<SnakePiece>::iterator it;
 	vector<SnakePiece>::iterator end = _snake.end();
 
-	for (it = _snake.begin(); it != end; it++)
+	for (const auto& piece: _snake)
 	{
-		pieceType = it->pieceType;
+		pieceType = piece.pieceType;
 		Utils::TileToChar(pieceType, asciiChar, foregroundColor);
-		_renderer->DrawChar(it->coord.x, it->coord.y, asciiChar, foregroundColor);
+		_renderer->DrawChar(piece.coord.x, piece.coord.y, asciiChar, foregroundColor);
 	}
 }
 
@@ -91,10 +91,10 @@ void Snake::EnlargeSnake()
 //Avoid making "switch case" or "if" each time we need to move the snake
 void Snake::InitDirectionCoordMap()
 {
-	_directionsCoordMap.insert(pair<EDirection, Coord>(EDirection::Right, Coord(0, 1)));
-	_directionsCoordMap.insert(pair<EDirection, Coord>(EDirection::Bottom, Coord(1, 0)));
-	_directionsCoordMap.insert(pair<EDirection, Coord>(EDirection::Left, Coord(0, -1)));
-	_directionsCoordMap.insert(pair<EDirection, Coord>(EDirection::Up, Coord(-1, 0)));
+	_directionsCoordMap.emplace(EDirection::Right, Coord(0, 1));
+	_directionsCoordMap.emplace(EDirection::Bottom, Coord(1, 0));
+	_directionsCoordMap.emplace(EDirection::Left, Coord(0, -1));
+	_directionsCoordMap.emplace(EDirection::Up, Coord(-1, 0));
 
 	_currentDir = EDirection::Left;
 }
@@ -103,7 +103,8 @@ void Snake::InitDirectionCoordMap()
 void Snake::CreateSnake()
 {
 	_snake.clear();
-
+	//Allocate the memory for the array once
+	_snake.reserve(START_SNAKE_SIZE);
 	_snake.push_back(SnakePiece(START_SNAKE_HEAD_X, START_SNAKE_HEAD_Y, ETile::SnakeHead));
 
 	for (int snakeIndex = 1; snakeIndex < START_SNAKE_SIZE; snakeIndex++)

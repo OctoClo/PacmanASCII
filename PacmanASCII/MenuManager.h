@@ -26,7 +26,7 @@ public:
 
 	void UpdateBuffer();
 
-	EMenuType GetCurrentMenu() { return _currentMenu; }
+	EMenuType GetCurrentMenu() const { return _currentMenu; }
 	void SetCurrentButton(EButton pButton) { _currentButton = pButton; }
 	EButton GetCurrentButton() { return _currentButton; }
 

@@ -51,7 +51,7 @@ void Renderer::ClearScreen()
 	}
 }
 
-void Renderer::DrawString(int pX, int pY, string pString, EColor pForeground, EColor pBackground)
+void Renderer::DrawString(int pX, int pY,const string& pString, EColor pForeground, EColor pBackground)
 {
 	int length = pString.length();
 

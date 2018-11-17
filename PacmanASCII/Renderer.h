@@ -15,7 +15,7 @@ public:
 
 	void ClearChar(int pX, int pY);
 	void ClearScreen();
-	void DrawString(int pX, int pY, string pString, EColor pForeground, EColor pBackground = EColor::Transparent);
+	void DrawString(int pX, int pY,const string& pString, EColor pForeground, EColor pBackground = EColor::Transparent);
 	void DrawChar(int pX, int pY, char pAsciiChar, EColor pForeground, EColor pBackground = EColor::Transparent);
 
 	static Renderer* GetInstance();
@@ -23,11 +23,11 @@ public:
 private:
 	int GetASCIIColor(EColor pForeground, EColor pBackground);
 
-	HANDLE _handleOutput;
-	COORD _screenBufferSize;
-	COORD _screenBufferCoord;
-	SMALL_RECT _rectRegion;
-	CHAR_INFO _screenBuffer[SCREEN_HEIGHT][SCREEN_WIDTH];
+	HANDLE _handleOutput = nullptr;
+	COORD _screenBufferSize = { 0,0 };
+	COORD _screenBufferCoord = { 0,0 };
+	SMALL_RECT _rectRegion = { 0,0,0,0 };
+	CHAR_INFO _screenBuffer[SCREEN_HEIGHT][SCREEN_WIDTH] = {};
 
 	static Renderer* _instance;
 };
